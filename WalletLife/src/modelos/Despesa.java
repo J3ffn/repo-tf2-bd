@@ -1,7 +1,6 @@
 package modelos;
 
 import enumerators.TipoDespesaEReceita;
-import manipulacaoDinheiro.AbstractMovimentoDinheiro;
 
 public class Despesa extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
 

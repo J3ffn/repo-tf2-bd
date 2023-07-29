@@ -1,3 +1,5 @@
+package manipulacaoDinheiro;
+
 import manipulacaoDinheiro.GerenciadorFinancas;
 import modelos.Usuario;
 

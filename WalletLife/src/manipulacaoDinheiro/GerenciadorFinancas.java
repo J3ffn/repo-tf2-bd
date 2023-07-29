@@ -1,10 +1,7 @@
 package manipulacaoDinheiro;
 
 import enumerators.TipoDespesaEReceita;
-import modelos.Despesa;
-import modelos.Investimento;
-import modelos.Receita;
-import modelos.Usuario;
+import modelos.*;
 
 public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
 

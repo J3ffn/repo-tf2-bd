@@ -1,5 +1,6 @@
 import enumerators.TipoDespesaEReceita;
 import manipulacaoDinheiro.GerenciadorFinancas;
+import manipulacaoDinheiro.PlanejamentoFinanceiroPessoal;
 import modelos.Despesa;
 import modelos.Investimento;
 import modelos.Receita;

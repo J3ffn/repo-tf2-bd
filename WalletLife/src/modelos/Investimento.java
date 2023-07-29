@@ -1,7 +1,5 @@
 package modelos;
 
-import manipulacaoDinheiro.AbstractMovimentoDinheiro;
-
 public class Investimento extends AbstractMovimentoDinheiro<String> {
 
     protected String corretora;

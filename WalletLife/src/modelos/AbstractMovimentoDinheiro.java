@@ -1,10 +1,15 @@
-package manipulacaoDinheiro;
+package modelos;
+
+import manipulacaoDinheiro.GerenciadorFinancas;
 
 public abstract class AbstractMovimentoDinheiro<T> {
 
     protected T tipo;
+
     private int id;
+
     private double valor;
+
     private String descricao;
 
     public AbstractMovimentoDinheiro(T tipo, double valor, String descricao) {
