@@ -11,51 +11,11 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static Investimento adicionar(Investimento investimento, int idFK) throws BancoDeDadosException {
-        Connection con = null;
-        try {
-            con = ConexaoBancoDeDados.getConnection();
-
-            Integer proximoId = this.getProximoId(con);
-            contato.setIdContato(proximoId);
-
-            String sql = "INSERT INTO CONTATO\n" +
-                    "(ID_CONTATO, ID_PESSOA, TIPO, NUMERO, DESCRICAO, ID_USUARIO)\n" +
-                    "VALUES(?, ?, ?, ?, ?, ?)\n";
-
-            PreparedStatement stmt = con.prepareStatement(sql);
-
-            stmt.setInt(1, contato.getIdContato());
-            stmt.setInt(2, contato.getPessoa().getIdPessoa());
-            stmt.setInt(3, contato.getTipoContato().getTipo()); // RESIDENCIAL(1) //1
-            stmt.setString(4, contato.getNumero());
-            stmt.setString(5, contato.getDescricao());
-            stmt.setInt(6, idFK);
-
-            int res = stmt.executeUpdate();
-            System.out.println("adicionarContato.res=" + res);
-            return contato;
-        } catch (SQLException e) {
-            throw new BancoDeDadosException(e.getCause());
-        } finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
     public static void main(String[] args) {
 
         /** @Início */
         Usuario userJeff = new Usuario("Jeff", "01/01/1111", "93812739812", "Jeff@gmail.com", "Testando");
         GerenciadorFinancas gerenciadorFinancas = new PlanejamentoFinanceiroPessoal(userJeff);
-
-        Usuario user;
 
         int[] escolhas = {-2, -2, -2};
         Scanner sc = new Scanner(System.in);
