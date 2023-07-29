@@ -1,6 +1,10 @@
 package modelos;
 
+import java.rmi.server.UID;
+
 public class Usuario {
+
+    private int id;
 
     private String nomeCompleto;
 
