@@ -2,28 +2,26 @@ package modelos;
 
 import enumerators.TipoDespesaEReceita;
 
+import java.time.LocalDate;
+
 public class Despesa extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
 
-    private String dataPagamento;
+    private LocalDate dataPagamento;
 
     private int  idFK;
 
-    public Despesa(TipoDespesaEReceita tipoDespesa, double valor, String descricao, String dataPagamento, int idFK) {
+    public Despesa(TipoDespesaEReceita tipoDespesa, double valor, String descricao, LocalDate dataPagamento, int idFK) {
         super(tipoDespesa, valor, descricao);
         this.dataPagamento = dataPagamento;
         this.idFK = idFK;
 
     }
 
-    public Despesa(){
-        super();
-    }
-
-    public String getDataPagamento() {
+    public LocalDate getDataPagamento() {
         return dataPagamento;
     }
 
-    public void setDataPagamento(String dataPagamento) {
+    public void setDataPagamento(LocalDate dataPagamento) {
         this.dataPagamento = dataPagamento;
     }
 
