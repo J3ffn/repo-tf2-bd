@@ -16,6 +16,9 @@ public class Despesa extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
         this.idFK = idFK;
 
     }
+    public Despesa(){
+
+    }
 
     public LocalDate getDataPagamento() {
         return dataPagamento;

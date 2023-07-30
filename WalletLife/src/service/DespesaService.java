@@ -51,7 +51,7 @@ public class DespesaService {
     }
 
     // leitura
-    public void listarDespesa() {
+    public void listarDespesa(Integer idUsuario) {
         try {
             List<Despesa> listar = despesaRepository.listar();
             listar.forEach(System.out::println);

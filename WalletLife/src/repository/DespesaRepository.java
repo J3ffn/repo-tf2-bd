@@ -6,6 +6,7 @@ import modelos.Despesa;
 import modelos.Usuario;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class DespesaRepository implements Repositorio<Integer, Despesa > {
             stmt.setString(2, despesa.getTipo().toString());
             stmt.setDouble(3,despesa.getValor());
             stmt.setString(4, despesa.getDescricao()); // RESIDENCIAL(1) //1
-            stmt.setString(5, despesa.getDataPagamento());
+            stmt.setDate(5, Date.valueOf(despesa.getDataPagamento()));
             stmt.setInt(6, despesa.getIdFK());
 
             int res = stmt.executeUpdate();
@@ -117,7 +118,7 @@ public class DespesaRepository implements Repositorio<Integer, Despesa > {
             stmt.setString(1, despesa.getTipo().toString());
             stmt.setDouble(2, despesa.getValor());
             stmt.setString(3, despesa.getDescricao());
-            stmt.setString(4, despesa.getDataPagamento() );
+            stmt.setDate(4, Date.valueOf(despesa.getDataPagamento()));
             stmt.setInt(5, despesa.getIdFK());
 
 
@@ -140,14 +141,14 @@ public class DespesaRepository implements Repositorio<Integer, Despesa > {
     }
 
     @Override
-    public List<Despesa> listar() throws BancoDeDadosException {
+    public List<Despesa> listar(Integer idUsuario) throws BancoDeDadosException {
         List<Despesa> despesas = new ArrayList<>();
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT * FROM DESPESA";
+            String sql = "SELECT * FROM DESPESA where id_usuario " + idUsuario;
 
             // Executa-se a consulta
             ResultSet res = stmt.executeQuery(sql);
@@ -158,7 +159,7 @@ public class DespesaRepository implements Repositorio<Integer, Despesa > {
                 despesa.setTipo(TipoDespesaEReceita.valueOf(res.getString("Tipo")));
                 despesa.setValor(res.getDouble("valor"));
                 despesa.setDecricao(res.getString("descricao"));
-                despesa.setDataPagamento(("data_pagamento"));
+                despesa.setDataPagamento(res.getDate("data_pagamento").toLocalDate());
                 despesa.setIdFK(res.getInt("id_usuario"));
                 despesas.add(despesa);
             }

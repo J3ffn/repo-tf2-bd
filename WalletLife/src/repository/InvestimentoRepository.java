@@ -136,14 +136,14 @@ public class InvestimentoRepository implements  Repositorio<Integer, Investiment
     }
 
     @Override
-    public List<Investimento> listar() throws BancoDeDadosException {
+    public List<Investimento> listar(Integer idUsuario) throws BancoDeDadosException {
         List<Investimento> investimentos = new ArrayList<>();
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT * FROM INVESTIMENTO";
+            String sql = "SELECT * FROM INVESTIMENTO where id_usuario = " + idUsuario;
 
             // Executa-se a consulta
             ResultSet res = stmt.executeQuery(sql);
