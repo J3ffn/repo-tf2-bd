@@ -7,6 +7,7 @@ import modelos.Receita;
 import modelos.Usuario;
 import service.UsuarioService;
 import utils.AbstractValidarData;
+import java.sql.PreparedStatement;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -154,6 +155,7 @@ public class Main {
                                                         case 2:
                                                             gerenciadorFinancas.addDespesa(new Despesa(TipoDespesaEReceita.VARIAVEL, valor, descricao, data));
                                                     }
+
                                                 }
                                             } while (tipoDespesa < 1 || tipoDespesa > 2);
                                             break;
@@ -219,7 +221,6 @@ public class Main {
                                             gerenciadorFinancas.getReceitas().forEach((key, receita) -> System.out.println("Id: " + key + " Receita: " + receita));
                                             if (qtdd > 0) {
                                                 do {
-
                                                     System.out.print("Id: ");
                                                     id = sc.nextInt();
                                                     gerenciadorFinancas.deleteReceita(id);

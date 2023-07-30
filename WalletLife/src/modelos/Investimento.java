@@ -13,9 +13,6 @@ public class Investimento extends AbstractMovimentoDinheiro<String> {
     public Investimento() {
     }
 
-    ;
-
-
     public Investimento(double valor, String descricao, String corretora, LocalDate dataInicio, int idFK) {
         super("Investimento", valor, descricao);
         this.corretora = corretora;

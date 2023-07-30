@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Usuario {
 
-    private int id;
+    private Integer id;
 
     private String nomeCompleto;
 
@@ -27,8 +27,7 @@ public class Usuario {
         this.senha = senha;
     }
 
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
