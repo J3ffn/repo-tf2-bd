@@ -18,6 +18,10 @@ public abstract class AbstractMovimentoDinheiro<T> {
         this.descricao = descricao;
     }
 
+    public AbstractMovimentoDinheiro() {
+
+    }
+
     public int getId() {
         return id;
     }
