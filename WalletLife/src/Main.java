@@ -5,18 +5,26 @@ import modelos.Despesa;
 import modelos.Investimento;
 import modelos.Receita;
 import modelos.Usuario;
+import repository.InvestimentoRepository;
+import service.InvestimentoService;
+import utils.AbstractValidarData;
 
-import java.sql.PreparedStatement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
-
+  
     public static void main(String[] args) {
 
         /** @Início */
         Usuario userJeff = new Usuario("Jeff", "01/01/1111", "93812739812", "Jeff@gmail.com", "Testando");
         GerenciadorFinancas gerenciadorFinancas = new PlanejamentoFinanceiroPessoal(userJeff);
+      
+        Usuario user;
+        int idPK = 1;
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         int[] escolhas = {-2, -2, -2};
         Scanner sc = new Scanner(System.in);
         while (escolhas[0] != 0) {
@@ -55,14 +63,28 @@ public class Main {
 
                                 System.out.print("Descrição: ");
                                 String descricao = sc.nextLine();
+                                boolean valida = false;
+                                String dataString = "";
+                                while (valida == false) {
+                                    System.out.print("Data: ");
+                                    dataString = sc.nextLine();
 
-                                System.out.print("Data: ");
-                                String data = sc.nextLine();
+                                    valida = AbstractValidarData.validarData(dataString);
+                                    if (valida) {
+                                        break;
+                                    } else {
+                                        System.out.println("Formato de data inválido!");
+                                    }
+                                }
+
+                                LocalDate data = LocalDate.parse(dataString, formatter);
                                 Integer tipoDespesa = null;
                                 switch (escolhas[0]) {
                                     case 1:
+
                                         do {
                                             System.out.println("""
+                                                    TIPO:
                                                     1- FIXA
                                                     2- VARIÁVEL
                                                     """);
@@ -79,15 +101,19 @@ public class Main {
                                         } while (tipoDespesa < 1 || tipoDespesa > 2);
                                         break;
                                     case 2:
-                                        System.out.print("Data início: ");
-                                        String dataInicio = sc.next();
+                                        //System.out.print("Data início: ");
+                                        //String dataInicio = sc.next();
+                                        LocalDate dataInicio = data;
                                         System.out.print("Corretora: ");
                                         String corretora = sc.next();
-                                        gerenciadorFinancas.addInvestimento(new Investimento(valor, descricao, corretora, dataInicio));
+                                        Investimento investimento = new Investimento(valor, descricao, corretora, dataInicio, idPK);
+                                        gerenciadorFinancas.addInvestimento(investimento);
+
                                         break;
                                     case 3:
                                         do {
                                             System.out.println("""
+                                                    TIPO:
                                                     1- FIXA
                                                     2- VARIÁVEL
                                                     """);

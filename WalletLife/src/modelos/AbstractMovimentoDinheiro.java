@@ -12,11 +12,14 @@ public abstract class AbstractMovimentoDinheiro<T> {
 
     private String descricao;
 
+    public AbstractMovimentoDinheiro () {};
+
     public AbstractMovimentoDinheiro(T tipo, double valor, String descricao) {
         this.tipo = tipo;
         this.valor = valor;
         this.descricao = descricao;
     }
+
 
     public int getId() {
         return id;
