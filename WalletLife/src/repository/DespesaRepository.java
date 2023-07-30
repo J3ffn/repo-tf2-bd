@@ -1,17 +1,22 @@
 package repository;
 
+import enumerators.TipoDespesaEReceita;
 import exceptions.BancoDeDadosException;
-import modelos.Investimento;
+import modelos.Despesa;
+import modelos.Usuario;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvestimentoRepository implements  Repositorio<Integer, Investimento> {
+public class DespesaRepository implements Repositorio<Integer, Despesa > {
+
+
     @Override
-    public Integer getProximoId(Connection connection) throws BancoDeDadosException {
+    public Integer getProximoId(Connection connection) throws SQLException {
         try {
-            String sql = "SELECT seq_investimento.nextval mysequence from DUAL";
+            String sql = "SELECT seq_despesa.nextval mysequence from DUAL";
             Statement stmt = connection.createStatement();
             ResultSet res = stmt.executeQuery(sql);
 
@@ -26,30 +31,30 @@ public class InvestimentoRepository implements  Repositorio<Integer, Investiment
     }
 
     @Override
-    public Investimento adicionar(Investimento investimento) throws BancoDeDadosException {
+    public Despesa adicionar(Despesa despesa) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
             Integer proximoId = this.getProximoId(con);
-            investimento.setId(proximoId);
+            despesa.setId(proximoId);
 
-            String sql = "INSERT INTO INVESTIMENTO\n" +
-                    "(ID_INVESTIMENTO, CORRETORA, TIPO, VALOR, DATA_INICIAL, DESCRICAO, ID_USUARIO)\n" +
-                    "VALUES(?, ?, ?, ?, ?, ?, ?)\n";
+            String sql = "INSERT INTO DESPESA\n" +
+                    "(ID_DESPESA, TIPO, VALOR, DESCRICAO, DATA_PAGAMENTO, ID_USUARIO )\n" +
+                    "VALUES(?, ?, ?, ?, ?, ?)\n";
+
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            stmt.setInt(1, investimento.getId());
-            stmt.setString(2, investimento.getCorretora());
-            stmt.setString(3, investimento.getTipo());
-            stmt.setDouble(4, investimento.getValor());
-            stmt.setDate(5, Date.valueOf(investimento.getDataInicio()));
-            stmt.setString(6, investimento.getDescricao());
-            stmt.setInt(7, investimento.getIdFK());
+            stmt.setInt(1, despesa.getId());
+            stmt.setString(2, despesa.getTipo().toString());
+            stmt.setDouble(3,despesa.getValor());
+            stmt.setString(4, despesa.getDescricao()); // RESIDENCIAL(1) //1
+            stmt.setDate(5, Date.valueOf(despesa.getDataPagamento()));
+            stmt.setInt(6, despesa.getIdFK());
 
             int res = stmt.executeUpdate();
-            System.out.println("adicionarInvestimento.res=" + res);
-            return investimento;
+            System.out.println("adicionarDespesa.res=" + res);
+            return despesa;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
@@ -69,7 +74,7 @@ public class InvestimentoRepository implements  Repositorio<Integer, Investiment
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            String sql = "DELETE FROM INVESTIMENTO WHERE ID_CONTATO = ?";
+            String sql = "DELETE FROM DESPESA WHERE ID_DESPESA = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
@@ -77,7 +82,7 @@ public class InvestimentoRepository implements  Repositorio<Integer, Investiment
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
-            System.out.println("removerInvestimentoPorId.res=" + res);
+            System.out.println("removerDespesaPorId.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -91,35 +96,35 @@ public class InvestimentoRepository implements  Repositorio<Integer, Investiment
                 e.printStackTrace();
             }
         }
+
     }
 
     @Override
-    public boolean editar(Integer id, Investimento investimento) throws BancoDeDadosException {
+    public boolean editar(Integer id, Despesa despesa) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
-            sql.append("UPDATE INVESTIMENTO SET ");
-            sql.append(" corretora = ?,");
+            sql.append("UPDATE DESPESA SET ");
             sql.append(" tipo = ?,");
-            sql.append(" valor = ? ");
-            sql.append(" data_inicial = ? ");
+            sql.append(" valor = ?,");
             sql.append(" descricao = ? ");
+            sql.append(" data_pagamento = ? ");
             sql.append(" id_usuario = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setString(1, investimento.getCorretora());
-            stmt.setString(2, investimento.getTipo());
-            stmt.setDouble(3, investimento.getValor());
-            stmt.setDate(4, Date.valueOf(investimento.getDataInicio()));
-            stmt.setString(5, investimento.getDescricao());
-            stmt.setInt(5, investimento.getIdFK());
+            stmt.setString(1, despesa.getTipo().toString());
+            stmt.setDouble(2, despesa.getValor());
+            stmt.setString(3, despesa.getDescricao());
+            stmt.setDate(4, Date.valueOf(despesa.getDataPagamento()));
+            stmt.setInt(5, despesa.getIdFK());
+
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
-            System.out.println("editarInvestimento.res=" + res);
+            System.out.println("editarDespesa.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -136,28 +141,27 @@ public class InvestimentoRepository implements  Repositorio<Integer, Investiment
     }
 
     @Override
-    public List<Investimento> listar(Integer idUsuario) throws BancoDeDadosException {
-        List<Investimento> investimentos = new ArrayList<>();
+    public List<Despesa> listar(Integer idUsuario) throws BancoDeDadosException {
+        List<Despesa> despesas = new ArrayList<>();
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT * FROM INVESTIMENTO where id_usuario = " + idUsuario;
+            String sql = "SELECT * FROM DESPESA where id_usuario " + idUsuario;
 
             // Executa-se a consulta
             ResultSet res = stmt.executeQuery(sql);
 
             while (res.next()) {
-                Investimento investimento = new Investimento();
-                investimento.setId(res.getInt("id_investimento"));
-                investimento.setCorretora(res.getString("corretora"));
-                investimento.setTipo(res.getString("tipo"));
-                investimento.setValor(res.getDouble("valor"));
-                investimento.setDataInicio(res.getDate("data_inicial").toLocalDate());
-                investimento.setDescricao(res.getString("descricao"));
-                investimento.setIdFK(res.getInt("id_usuario"));
-                investimentos.add(investimento);
+                Despesa despesa = new Despesa();
+                despesa.setId(res.getInt("id_despesa"));
+                despesa.setTipo(TipoDespesaEReceita.valueOf(res.getString("Tipo")));
+                despesa.setValor(res.getDouble("valor"));
+                despesa.setDecricao(res.getString("descricao"));
+                despesa.setDataPagamento(res.getDate("data_pagamento").toLocalDate());
+                despesa.setIdFK(res.getInt("id_usuario"));
+                despesas.add(despesa);
             }
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
@@ -170,7 +174,7 @@ public class InvestimentoRepository implements  Repositorio<Integer, Investiment
                 e.printStackTrace();
             }
         }
-        return investimentos;
-    }
+        return despesas;
 
+    }
 }
