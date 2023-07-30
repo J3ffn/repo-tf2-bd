@@ -6,6 +6,7 @@ import modelos.Investimento;
 import modelos.Receita;
 import modelos.Usuario;
 import service.UsuarioService;
+import utils.AbstractFormatoEmail;
 import utils.AbstractValidarData;
 import java.sql.PreparedStatement;
 
@@ -20,6 +21,12 @@ public class Main {
             System.out.println("Data inválida!");
         }
         return AbstractValidarData.validarData(data);
+    }
+    public static boolean validarEmail(String email) {
+        if(!AbstractFormatoEmail.formatadorEmail(email)) {
+            System.out.println("Formato de email inválido!");
+        }
+        return AbstractFormatoEmail.formatadorEmail(email);
     }
 
     public static void main(String[] args) {
@@ -41,11 +48,14 @@ public class Main {
                          0 - sair.
                          escolha:
                     """);
-            Integer logarOuRegistrar = 0;
+            Integer logarOuRegistrar;
             do {
                 logarOuRegistrar = sc.nextInt();
                 sc.nextLine();
             } while (logarOuRegistrar > 2 || logarOuRegistrar < 0);
+            if(logarOuRegistrar == 0) {
+                break;
+            }
 
             while (usuario == null && logarOuRegistrar == 2) {
                 System.out.print("Nome completo: ");
@@ -62,14 +72,27 @@ public class Main {
 
                 System.out.print("CPF: ");
                 String cpf = sc.next();
+                String email = "";
+                boolean verificado = false;
+                boolean disponivel;
 
-                System.out.print("Email: ");
-                String email = sc.next();
+                do {
+                    System.out.print("Email: ");
+                    email = sc.next();
+                    verificado = AbstractFormatoEmail.formatadorEmail(email);
+                    //disponivel = UsuarioService.validarEmail(email);
+                    if(!verificado){
+                        System.out.println("Formato invalido!");
+                    }
+                    /*if(UsuarioService.validarEmail(email)) {
+                        System.out.println("Email já está em uso");
+                    }*/
+                }while (!verificado/* || disponivel*/);
 
-                while (UsuarioService.validarEmail(email)) {
+                /*while (UsuarioService.validarEmail(email)) {
                     System.out.println("Email já está em uso");
                     email = sc.next();
-                }
+                }*/
 
                 System.out.print("Senha: ");
                 String senha = sc.next();
