@@ -17,8 +17,6 @@ public class InvestimentoService {
     // criação de um objeto
     public void adicionarInvestimento(Investimento investimento) {
         try {
-            /*DecimalFormat formatador = new DecimalFormat("#.##");
-            investimento.setValor(Double.parseDouble(formatador.format(investimento.getValor())));*/
             Investimento investimentoAdicionado = investimentoRepository.adicionar(investimento);
             System.out.println("investimento adicinado com sucesso! " + investimentoAdicionado);
         } catch (BancoDeDadosException e) {
