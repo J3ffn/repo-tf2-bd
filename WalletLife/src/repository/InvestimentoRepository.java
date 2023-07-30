@@ -1,0 +1,176 @@
+package repository;
+
+import exceptions.BancoDeDadosException;
+import modelos.Investimento;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class InvestimentoRepository implements  Repositorio<Integer, Investimento> {
+    @Override
+    public Integer getProximoId(Connection connection) throws BancoDeDadosException {
+        try {
+            String sql = "SELECT seq_investimento.nextval mysequence from DUAL";
+            Statement stmt = connection.createStatement();
+            ResultSet res = stmt.executeQuery(sql);
+
+            if (res.next()) {
+                return res.getInt("mysequence");
+            }
+
+            return null;
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        }
+    }
+
+    @Override
+    public Investimento adicionar(Investimento investimento) throws BancoDeDadosException {
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            Integer proximoId = this.getProximoId(con);
+            investimento.setId(proximoId);
+
+            String sql = "INSERT INTO INVESTIMENTO\n" +
+                    "(ID_INVESTIMENTO, CORRETORA, TIPO, VALOR, DATA_INICIAL, DESCRICAO, ID_USUARIO)\n" +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?)\n";
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, investimento.getId());
+            stmt.setString(2, investimento.getCorretora());
+            stmt.setString(3, investimento.getTipo());
+            stmt.setDouble(4, investimento.getValor());
+            stmt.setDate(5, Date.valueOf(investimento.getDataInicio()));
+            stmt.setString(6, investimento.getDescricao());
+            stmt.setInt(7, investimento.getIdFK());
+
+            int res = stmt.executeUpdate();
+            System.out.println("adicionarInvestimento.res=" + res);
+            return investimento;
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public boolean remover(Integer id) throws BancoDeDadosException {
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            String sql = "DELETE FROM INVESTIMENTO WHERE ID_CONTATO = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, id);
+
+            // Executa-se a consulta
+            int res = stmt.executeUpdate();
+            System.out.println("removerInvestimentoPorId.res=" + res);
+
+            return res > 0;
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public boolean editar(Integer id, Investimento investimento) throws BancoDeDadosException {
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("UPDATE INVESTIMENTO SET ");
+            sql.append(" corretora = ?,");
+            sql.append(" tipo = ?,");
+            sql.append(" valor = ? ");
+            sql.append(" data_inicial = ? ");
+            sql.append(" descricao = ? ");
+            sql.append(" id_usuario = ? ");
+
+            PreparedStatement stmt = con.prepareStatement(sql.toString());
+
+            stmt.setString(1, investimento.getCorretora());
+            stmt.setString(2, investimento.getTipo());
+            stmt.setDouble(3, investimento.getValor());
+            stmt.setDate(4, Date.valueOf(investimento.getDataInicio()));
+            stmt.setString(5, investimento.getDescricao());
+            stmt.setInt(5, investimento.getIdFK());
+
+            // Executa-se a consulta
+            int res = stmt.executeUpdate();
+            System.out.println("editarInvestimento.res=" + res);
+
+            return res > 0;
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public List<Investimento> listar() throws BancoDeDadosException {
+        List<Investimento> investimentos = new ArrayList<>();
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT * FROM INVESTIMENTO";
+
+            // Executa-se a consulta
+            ResultSet res = stmt.executeQuery(sql);
+
+            while (res.next()) {
+                Investimento investimento = new Investimento();
+                investimento.setId(res.getInt("id_investimento"));
+                investimento.setCorretora(res.getString("corretora"));
+                investimento.setTipo(res.getString("tipo"));
+                investimento.setValor(res.getDouble("valor"));
+                investimento.setDataInicio(res.getDate("data_inicial").toLocalDate());
+                investimento.setDescricao(res.getString("descricao"));
+                investimento.setIdFK(res.getInt("id_usuario"));
+                investimentos.add(investimento);
+            }
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return investimentos;
+    }
+
+}

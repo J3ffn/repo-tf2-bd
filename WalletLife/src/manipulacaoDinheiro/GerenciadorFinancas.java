@@ -3,15 +3,21 @@ package manipulacaoDinheiro;
 import enumerators.TipoDespesaEReceita;
 import modelos.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
 public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
 
     private final Usuario usuario;
 
-    private ListFinancas<Despesa> despesas;
+    private HashMap<Integer, Despesa> despesas;
 
-    private ListFinancas<Investimento> investimentos;
+    private HashMap<Integer, Investimento> investimentos;
 
-    private ListFinancas<Receita> receitas;
+    private HashMap<Integer, Receita> receitas;
 
     private double totalReceita;
 
@@ -20,64 +26,46 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
     private double totalInvestimento;
 
     public GerenciadorFinancas(Usuario usuario) {
-        this.despesas = new ListFinancas<>();
-        this.receitas = new ListFinancas<>();
-        this.investimentos = new ListFinancas<>();
+        this.despesas = new HashMap<>();
+        this.receitas = new HashMap<>();
+        this.investimentos = new HashMap<>();
         this.usuario = usuario;
     }
 
     @Override
-    public double calcularDespesaTotal() {
-        if (totalDespesas == 0) {
-            for (AbstractMovimentoDinheiro<TipoDespesaEReceita> despesa : despesas.getLista().values()) {
-                totalDespesas += despesa.getValor();
-            }
+    public double calcularTotal(HashMap<?, ?> lista) {
+        Double total = 0.0;
+        for (AbstractMovimentoDinheiro<TipoDespesaEReceita> despesa : despesas.values()) {
+            total += despesa.getValor();
         }
-        return totalDespesas;
+
+        return total;
     }
 
     @Override
     public double calcularReceitaTotal() {
-        if (totalReceita == 0) {
-            for (AbstractMovimentoDinheiro<TipoDespesaEReceita> receita : receitas.getLista().values()) {
-                totalReceita += receita.getValor();
-            }
-        }
+        totalReceita = calcularTotal(receitas);
         return totalReceita;
     }
 
     @Override
     public double calcularInvestimentos() {
-        if (totalInvestimento == 0) {
-            for (AbstractMovimentoDinheiro<String> investimento : investimentos.getLista().values()) {
-                totalInvestimento += investimento.getValor();
-            }
-        }
+        totalInvestimento = calcularTotal(investimentos);
         return totalInvestimento;
     }
 
-    @Override
-    public void imprimir() {
-        System.out.println(
-                "GerenciadorFinancas {" +
-                        "despesas=" + despesas +
-                        ", investimentos=" + investimentos +
-                        ", receitas=" + receitas +
-                        ", totalReceita=" + totalReceita +
-                        ", totalDespesas=" + totalDespesas +
-                        ", totalInvestimento=" + totalInvestimento +
-                        ", usuario=" + usuario +
-                        '}'
-        );
+    public double calcularDespesa() {
+        totalDespesas = calcularTotal(despesas);
+        return totalDespesas;
     }
 
-    public ListFinancas<Despesa> getDespesas() {
+    public HashMap<Integer, Despesa> getDespesas() {
         return despesas;
     }
 
     public void addDespesa(Despesa despesa) {
         despesa.setId(despesas.size());
-        this.despesas.add(despesa);
+        this.despesas.put(despesa.getId(), despesa);
         totalDespesas += despesa.getValor();
     }
 
@@ -85,26 +73,26 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
         this.totalDespesas -= despesas.get(id).getValor();
         this.despesas.get(id).setValor(valor);
         this.totalDespesas += valor;
-        this.despesas.update(id, despesas.get(id));
+        this.despesas.replace(id, despesas.get(id));
     }
 
     public void updateDescricaoDespesa(int id, String descricao) {
         this.despesas.get(id).setDescricao(descricao);
-        this.despesas.update(id, despesas.get(id));
+        this.despesas.replace(id, despesas.get(id));
     }
 
     public boolean deleteDespesa(int id) {
         this.totalDespesas -= despesas.get(id).getValor();
-        return despesas.delete(id, despesas.get(id));
+        return despesas.replace(id, despesas.get(id)) != null;
     }
 
-    public ListFinancas<Investimento> getInvestimentos() {
+    public HashMap<Integer, Investimento> getInvestimentos() {
         return investimentos;
     }
 
     public void addInvestimento(Investimento investimento) {
         investimento.setId(investimentos.size());
-        this.investimentos.add(investimento);
+        this.investimentos.put(investimento.getId(), investimento);
         this.totalInvestimento += investimento.getValor();
     }
 
@@ -112,26 +100,26 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
         this.totalInvestimento -= investimentos.get(id).getValor();
         this.investimentos.get(id).setValor(valor);
         this.totalInvestimento += investimentos.get(id).getValor();
-        this.investimentos.update(id, investimentos.get(id));
+        this.investimentos.replace(id, investimentos.get(id));
     }
 
     public void updateDescricaoInvestimento(int id, String descricao) {
         this.investimentos.get(id).setDescricao(descricao);
-        this.investimentos.update(id, investimentos.get(id));
+        this.investimentos.replace(id, investimentos.get(id));
     }
 
     public boolean deleteInvestimento(int id) {
         this.totalInvestimento -= investimentos.get(id).getValor();
-        return this.investimentos.delete(id, investimentos.get(id));
+        return this.investimentos.replace(id, investimentos.get(id)) != null;
     }
 
-    public ListFinancas<Receita> getReceitas() {
+    public HashMap<Integer, Receita> getReceitas() {
         return receitas;
     }
 
     public void addReceita(Receita receita) {
         receita.setId(receita.getId());
-        receitas.add(receita);
+        receitas.put(receita.getId(), receita);
         totalReceita += receita.getValor();
     }
 
@@ -139,17 +127,17 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
         this.totalReceita -= receitas.get(id).getValor();
         this.receitas.get(id).setValor(valor);
         this.totalReceita += receitas.get(id).getValor();
-        this.receitas.update(id, receitas.get(id));
+        this.receitas.replace(id, receitas.get(id));
     }
 
     public void updateDescricaoReceita(int id, String descricao) {
         this.receitas.get(id).setDescricao(descricao);
-        this.receitas.update(id, receitas.get(id));
+        this.receitas.replace(id, receitas.get(id));
     }
 
     public boolean deleteReceita(int id) {
         totalReceita -= receitas.get(id).getValor();
-        return receitas.delete(id, receitas.get(id));
+        return receitas.replace(id, receitas.get(id)) != null;
     }
 
     public double getValorTotalReceita() {
@@ -190,4 +178,20 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
                 """, receitas.size(), totalReceita, despesas.size(), totalDespesas, investimentos.size(), totalInvestimento
         );
     }
+
+    @Override
+    public void imprimir() {
+        System.out.println(
+                "GerenciadorFinancas {" +
+                        "despesas=" + despesas +
+                        ", investimentos=" + investimentos +
+                        ", receitas=" + receitas +
+                        ", totalReceita=" + totalReceita +
+                        ", totalDespesas=" + totalDespesas +
+                        ", totalInvestimento=" + totalInvestimento +
+                        ", usuario=" + usuario +
+                        '}'
+        );
+    }
+
 }
