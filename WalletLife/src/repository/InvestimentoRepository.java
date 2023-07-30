@@ -136,7 +136,7 @@ public class InvestimentoRepository implements  Repositorio<Integer, Investiment
     }
 
     @Override
-    public List<Investimento> listar() throws BancoDeDadosException {
+    public List<Investimento> listar(Integer idUsuario) throws BancoDeDadosException {
         List<Investimento> investimentos = new ArrayList<>();
         Connection con = null;
         try {

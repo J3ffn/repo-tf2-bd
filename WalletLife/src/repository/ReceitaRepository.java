@@ -35,18 +35,17 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
             receita.setId(proximoId);
 
             String sql = "INSERT INTO RECEITA\n" +
-                    "(seq_receita.nextval, TIPO, VALOR, DESCRICAO, BANCO, EMPRESA, ID_USUARIO)\n" +
+                    "(seq_receita.nextval, BANCO, EMPRESA, VALOR, DESCRICAO, ID_USUARIO)\n" +
                     "VALUES(?, ?, ?, ?, ?)\n";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setInt(1, receita.getId());
-            stmt.setString(2, receita.getTipo().toString());
-            stmt.setDouble(3, receita.getValor());
-            stmt.setString(4, receita.getDescricao());
-            stmt.setString(5, receita.getBanco());
-            stmt.setString(6, receita.getEmpresa());
-            stmt.setString(7, receita.getBanco());
+            stmt.setString(2, receita.getBanco());
+            stmt.setString(3, receita.getEmpresa());
+            stmt.setDouble(4, receita.getValor());
+            stmt.setString(5, receita.getDescricao());
+            stmt.setInt(6, receita.getIdFK());
 
             int res = stmt.executeUpdate();
             System.out.println("adicionarReceita.res=" + res);
@@ -105,20 +104,18 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE RECEITA SET ");
-            sql.append(" tipo = ?,");
-            sql.append(" valor = ? ");
-            sql.append(" descricao = ? ");
             sql.append(" banco = ? ");
             sql.append(" empresa = ? ");
+            sql.append(" valor = ? ");
+            sql.append(" descricao = ? ");
             sql.append(" id_usuario = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setString(1, receita.getTipo().toString());
-            stmt.setDouble(2, receita.getValor());
-            stmt.setString(3, receita.getDescricao());
-            stmt.setString(4, receita.getBanco());
-            stmt.setString(5, receita.getEmpresa());
+            stmt.setString(1, receita.getBanco());
+            stmt.setString(2, receita.getEmpresa());
+            stmt.setDouble(3, receita.getValor());
+            stmt.setString(4, receita.getDescricao());
             stmt.setInt(5, receita.getIdFK());
 
             // Executa-se a consulta
@@ -156,11 +153,10 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
             while (res.next()) {
                 Receita receita = new Receita();
                 receita.setId(res.getInt("id_receita"));
-                receita.setTipo(TipoDespesaEReceita.valueOf("tipo"));
-                receita.setValor(res.getDouble("valor"));
-                receita.setDescricao(res.getString("descricao"));
                 receita.setBanco(res.getString("banco"));
                 receita.setEmpresa(res.getString("empresa"));
+                receita.setValor(res.getDouble("valor"));
+                receita.setDescricao(res.getString("descricao"));
                 receita.setIdFK(res.getInt("id_usuario"));
                 receitas.add(receita);
             }
