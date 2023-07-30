@@ -4,7 +4,6 @@ import exceptions.BancoDeDadosException;
 import modelos.Investimento;
 import repository.InvestimentoRepository;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class InvestimentoService {
@@ -41,7 +40,7 @@ public class InvestimentoService {
     // atualização de um objeto
     public void editarInvestimento(Integer id, Investimento investimento) {
         try {
-            boolean conseguiuEditar = investimentoRepository.editar(id, investimento);
+            boolean conseguiuEditar = investimentoRepository.editar(investimento);
             System.out.println("investimento editado? " + conseguiuEditar + "| com id=" + id);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();

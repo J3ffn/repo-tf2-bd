@@ -3,7 +3,6 @@ package repository;
 import exceptions.BancoDeDadosException;
 import modelos.Investimento;
 
-import java.net.IDN;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +69,7 @@ public class InvestimentoRepository implements Repositorio<Integer, Investimento
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            String sql = "DELETE FROM INVESTIMENTO WHERE ID_CONTATO = ?";
+            String sql = "DELETE FROM INVESTIMENTO WHERE ID_USUARIO = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
@@ -95,7 +94,7 @@ public class InvestimentoRepository implements Repositorio<Integer, Investimento
     }
 
     @Override
-    public boolean editar(Integer id, Investimento investimento) throws BancoDeDadosException {
+    public boolean editar(Investimento investimento) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -107,7 +106,7 @@ public class InvestimentoRepository implements Repositorio<Integer, Investimento
             sql.append(" valor = ? ");
             sql.append(" data_inicial = ? ");
             sql.append(" descricao = ? ");
-            sql.append(" id_usuario = ? ");
+            sql.append(" where id_usuario = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 

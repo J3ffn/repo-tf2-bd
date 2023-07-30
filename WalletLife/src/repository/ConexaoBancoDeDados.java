@@ -15,6 +15,15 @@ public class ConexaoBancoDeDados {
     private static final String PASS = "oracle";
     private static final String SCHEMA = "WalletLife";
 
+
+    private static final String SERVERFIRMA = "vemser-hml.dbccompany.com.br";
+    private static final String PORTFIRMA = "25000"; // Porta TCP padrão do Oracle
+    private static final String DATABASEFIRMA = "xe";
+    // Configuração dos parâmetros de autenticação
+    private static final String USERFIRMA = "EQUIPE_5";
+    private static final String PASSFIRMA = "oracle";
+    private static final String SCHEMAFIRMA = "EQUIPE_5";
+
     public static Connection getConnection() throws SQLException {
         String url = "jdbc:oracle:thin:@" + SERVER + ":" + PORT + ":" + DATABASE;
         // jdbc:oracle:thin:@localhost:1521:xe
@@ -27,15 +36,6 @@ public class ConexaoBancoDeDados {
 
         return con;
     }
-
-    private static final String SERVERFIRMA = "vemser-hml.dbccompany.com.br";
-    private static final String PORTFIRMA = "25000"; // Porta TCP padrão do Oracle
-    private static final String DATABASEFIRMA = "xe";
-
-    // Configuração dos parâmetros de autenticação
-    private static final String USERFIRMA = "EQUIPE_5";
-    private static final String PASSFIRMA = "oracle";
-    private static final String SCHEMAFIRMA = "EQUIPE_5";
 
     public static Connection getConnectionFirma() throws SQLException {
         String url = "jdbc:oracle:thin:@" + SERVERFIRMA + ":" + PORTFIRMA + ":" + DATABASEFIRMA;

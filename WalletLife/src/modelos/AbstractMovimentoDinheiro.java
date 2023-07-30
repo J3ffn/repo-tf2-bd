@@ -1,7 +1,5 @@
 package modelos;
 
-import manipulacaoDinheiro.GerenciadorFinancas;
-
 public abstract class AbstractMovimentoDinheiro<T> {
 
     protected T tipo;
@@ -12,7 +10,10 @@ public abstract class AbstractMovimentoDinheiro<T> {
 
     private String descricao;
 
-    public AbstractMovimentoDinheiro () {};
+    public AbstractMovimentoDinheiro() {
+    }
+
+    ;
 
     public AbstractMovimentoDinheiro(T tipo, double valor, String descricao) {
         this.tipo = tipo;
