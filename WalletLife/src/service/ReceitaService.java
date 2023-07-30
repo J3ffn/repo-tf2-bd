@@ -47,9 +47,9 @@ public class ReceitaService {
     }
 
     // leitura
-    public void listar(Integer id) {
+    public void listar(Integer idUsuario) {
         try {
-            List<Receita> listar = receitaRepository.listar(id);
+            List<Receita> listar = receitaRepository.listar(idUsuario);
             listar.forEach(System.out::println);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
