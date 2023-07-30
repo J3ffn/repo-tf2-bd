@@ -48,13 +48,13 @@ public class InvestimentoService {
     }
 
     // leitura
-    public void listar(Integer idUsuario) {
+    public List<Investimento> listar(Integer idUsuario) {
         try {
-            List<Investimento> listar = investimentoRepository.listar(idUsuario);
-            listar.forEach(System.out::println);
+            return investimentoRepository.listar(idUsuario);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 }

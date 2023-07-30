@@ -17,16 +17,18 @@ import java.util.Scanner;
 public class Main {
 
     public static boolean validarData(String data) {
-        if(!AbstractValidarData.validarData(data)) {
+        boolean valida = AbstractValidarData.validarData(data);
+        if(!valida) {
             System.out.println("Data inválida!");
         }
-        return AbstractValidarData.validarData(data);
+        return valida;
     }
     public static boolean validarEmail(String email) {
-        if(!AbstractFormatoEmail.formatadorEmail(email)) {
+        boolean valida = AbstractFormatoEmail.formatadorEmail(email);
+        if(!valida) {
             System.out.println("Formato de email inválido!");
         }
-        return AbstractFormatoEmail.formatadorEmail(email);
+        return valida;
     }
 
     public static void main(String[] args) {
@@ -46,13 +48,13 @@ public class Main {
                          1 - logar.
                          2 - registrar-se.
                          0 - sair.
-                         escolha:
-                    """);
+                         escolha: """);
             Integer logarOuRegistrar;
             do {
                 logarOuRegistrar = sc.nextInt();
                 sc.nextLine();
             } while (logarOuRegistrar > 2 || logarOuRegistrar < 0);
+
             if(logarOuRegistrar == 0) {
                 break;
             }
@@ -72,38 +74,41 @@ public class Main {
 
                 System.out.print("CPF: ");
                 String cpf = sc.next();
-                String email = "";
-                boolean verificado = false;
-                boolean disponivel;
+                System.out.print("Email: ");
+                String email = sc.next();
+                boolean emailDisponivel = UsuarioService.validarEmail(email);
 
-                do {
+                while(!AbstractFormatoEmail.formatadorEmail(email)){
+                    System.out.println("Formato invalido!");
+                    email = sc.next();
+                }
+
+                while (!emailDisponivel) {
+                    System.out.println("Email já em uso! Digite outro email.");
                     System.out.print("Email: ");
                     email = sc.next();
-                    verificado = AbstractFormatoEmail.formatadorEmail(email);
-                    //disponivel = UsuarioService.validarEmail(email);
-                    if(!verificado){
-                        System.out.println("Formato invalido!");
-                    }
-                    /*if(UsuarioService.validarEmail(email)) {
-                        System.out.println("Email já está em uso");
-                    }*/
-                }while (!verificado/* || disponivel*/);
 
-                /*while (UsuarioService.validarEmail(email)) {
-                    System.out.println("Email já está em uso");
-                    email = sc.next();
-                }*/
+                    while(!AbstractFormatoEmail.formatadorEmail(email)){
+                        System.out.println("Formato invalido!");
+                        email = sc.next();
+                    }
+
+                    if(!UsuarioService.validarEmail(email)) {
+                        emailDisponivel = true;
+                    }
+
+                };
 
                 System.out.print("Senha: ");
                 String senha = sc.next();
 
-                usuario = new Usuario(nomeCompleto, dataNascimento, cpf, email, senha);
+                usuario = new Usuario(nomeCompleto, dataNascimento, cpf, email.toLowerCase(), senha);
+                UsuarioService.adicionarUsuario(usuario);
             }
 
-            UsuarioService.adicionarUsuario(usuario);
-
+            logado = false;
             // Login:
-            while (usuario == null) {
+            while (!logado) {
 
                 System.out.print("email: ");
                 String email = sc.next();
@@ -112,6 +117,8 @@ public class Main {
                 String senha = sc.next();
 
                 usuario = UsuarioService.login(email, senha);
+                if (usuario != null)
+                    logado = true;
 
             }
 
