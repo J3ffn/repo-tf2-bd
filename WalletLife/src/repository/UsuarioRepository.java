@@ -6,18 +6,17 @@ import modelos.Usuario;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UsuarioRepository implements Repositorio<Integer, Usuario> {
 
     public boolean validarEmail(String email) throws SQLException {
         String sql = "SELECT * FROM USUARIO u " +
-                "WHERE u.email = '" + email +  "'";
+                "WHERE u.email = '" + email + "'";
 
         Statement stmt = ConexaoBancoDeDados.getConnection().createStatement();
         ResultSet res = stmt.executeQuery(sql);
-
-        boolean loginPermitido = false;
-        Usuario usuario = new Usuario();
 
         return res.getRow() > 0;
     }
@@ -64,12 +63,12 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
             Integer proxId = this.getProximoId(con);
             usuario.setId(proxId);
 
-            String sql = "INSERT INTO USUARIO(ID_USUARIO, NOME, DATANACIMENTO, CPF, EMAIL, SENHA)" +
+            String sql = "INSERT INTO USUARIO(ID_USUARIO, NOME, DATANASCIMENTO, CPF, EMAIL, SENHA)" +
                     "VALUES(?, ?, ?, ?, ?, ?)";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            stmt.setInt(1, proxId);
+            stmt.setInt(1, usuario.getId());
             stmt.setString(2, usuario.getNomeCompleto());
             stmt.setDate(3, Date.valueOf(usuario.getDataNascimento()));
             stmt.setString(4, usuario.getCpf()); // @TODO Possível erro.
