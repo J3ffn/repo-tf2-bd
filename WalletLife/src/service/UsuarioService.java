@@ -11,8 +11,11 @@ public class UsuarioService {
 
     private static UsuarioRepository usuarioRepository;
 
+    static {
+        usuarioRepository = new UsuarioRepository();
+    }
+
     public UsuarioService() {
-        this.usuarioRepository = new UsuarioRepository();
     }
 
     public static boolean validarEmail(String email) {

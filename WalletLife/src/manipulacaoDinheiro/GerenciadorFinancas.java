@@ -2,7 +2,9 @@ package manipulacaoDinheiro;
 
 import enumerators.TipoDespesaEReceita;
 import modelos.*;
+import service.DespesaService;
 import service.InvestimentoService;
+import service.ReceitaService;
 import service.UsuarioService;
 
 import java.util.HashMap;
@@ -11,15 +13,15 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
 
     private final Usuario usuario;
 
-    private UsuarioService usuarioService;
-
     private HashMap<Integer, Despesa> despesas;
+    private DespesaService despesaService;
 
     private HashMap<Integer, Investimento> investimentos;
 
     private InvestimentoService investimentoService;
 
     private HashMap<Integer, Receita> receitas;
+    private ReceitaService receitaService;
 
     private double totalReceita;
 
@@ -31,9 +33,18 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
         this.despesas = new HashMap<>();
         this.receitas = new HashMap<>();
         this.investimentos = new HashMap<>();
-        this.investimentoService = new InvestimentoService();
         this.usuario = usuario;
-        this.usuarioService = new UsuarioService();
+
+        this.investimentoService = new InvestimentoService();
+        this.despesaService = new DespesaService();
+        this.receitaService = new ReceitaService();
+    }
+
+    public void popularBanco() {
+        Integer idUsuario = usuario.getId();
+//        investimentoService.listar(idUsuario);
+//        despesaService.listarDespesa(idUsuario);
+//        receitaService.listar(idUsuario);
     }
 
     @Override
@@ -72,6 +83,7 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
         despesa.setId(despesas.size());
         this.despesas.put(despesa.getId(), despesa);
         totalDespesas += despesa.getValor();
+        despesaService.adicionarDespesa(despesa);
     }
 
     public void updateValorDespesa(int id, double valor) {
@@ -88,6 +100,7 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
 
     public boolean deleteDespesa(int id) {
         this.totalDespesas -= despesas.get(id).getValor();
+        despesaService.removerDespesa(despesas.get(id).getId());
         return despesas.replace(id, despesas.get(id)) != null;
     }
 
@@ -96,10 +109,10 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
     }
 
     public void addInvestimento(Investimento investimento) {
-        investimentoService.adicionarInvestimento(investimento);
         investimento.setId(investimentos.size());
         this.investimentos.put(investimento.getId(), investimento);
         this.totalInvestimento += investimento.getValor();
+        investimentoService.adicionarInvestimento(investimento);
     }
 
     public void updateValorInvestimento(int id, double valor) {
@@ -128,6 +141,7 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
         receita.setId(receita.getId());
         receitas.put(receita.getId(), receita);
         totalReceita += receita.getValor();
+        receitaService.adicionarReceita(receita);
     }
 
     public void updateValorReceita(int id, double valor) {
