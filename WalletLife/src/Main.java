@@ -361,6 +361,5 @@ public class Main {
             }
 
         } while (!logado);
-
     }
 }

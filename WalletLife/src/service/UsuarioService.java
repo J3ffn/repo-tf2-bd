@@ -17,7 +17,8 @@ public class UsuarioService {
 
     public static boolean validarEmail(String email) {
         try {
-            return usuarioRepository.validarEmail(email);
+            boolean validou = usuarioRepository.validarEmail(email);
+            return validou;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
