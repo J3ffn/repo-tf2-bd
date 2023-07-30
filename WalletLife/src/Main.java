@@ -14,8 +14,8 @@ public class Main {
     public static void main(String[] args) {
 
         /** @Início */
-        Usuario userJeff = new Usuario("Jeff", "01/01/1111", "93812739812", "Jeff@gmail.com", "Testando");
-        GerenciadorFinancas gerenciadorFinancas = new PlanejamentoFinanceiroPessoal(userJeff);
+        Usuario usuario = new Usuario("Jeff", "01/01/1111", "93812739812", "Jeff@gmail.com", "Testando");
+        GerenciadorFinancas gerenciadorFinancas = new PlanejamentoFinanceiroPessoal(usuario);
 
         int[] escolhas = {-2, -2, -2};
         Scanner sc = new Scanner(System.in);
