@@ -1,10 +1,8 @@
 package modelos;
 
-import java.rmi.server.UID;
-
 public class Usuario {
 
-    private int id;
+    private Integer id;
 
     private String nomeCompleto;
 
@@ -22,6 +20,14 @@ public class Usuario {
         this.cpf = cpf;
         this.email = email;
         this.senha = senha;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNomeCompleto() {

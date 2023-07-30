@@ -1,15 +1,22 @@
 package modelos;
 
+import java.time.LocalDate;
+
 public class Investimento extends AbstractMovimentoDinheiro<String> {
 
     protected String corretora;
 
-    private String dataInicio;
+    private LocalDate dataInicio;
 
-    public Investimento(double valor, String descricao, String corretora, String dataInicio) {
+    private int idFK;
+
+    public Investimento() {}
+
+    public Investimento(double valor, String descricao, String corretora, LocalDate dataInicio, int idFK) {
         super("Investimento", valor, descricao);
         this.corretora = corretora;
         this.dataInicio = dataInicio;
+        this.idFK = idFK;
     }
 
     public String getCorretora() {
@@ -20,12 +27,20 @@ public class Investimento extends AbstractMovimentoDinheiro<String> {
         this.corretora = corretora;
     }
 
-    public String getDataInicio() {
+    public LocalDate getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(String dataInicio) {
+    public void setDataInicio(LocalDate dataInicio) {
         this.dataInicio = dataInicio;
+    }
+
+    public int getIdFK() {
+        return idFK;
+    }
+
+    public void setIdFK(int idFK) {
+        this.idFK = idFK;
     }
 
     @Override
