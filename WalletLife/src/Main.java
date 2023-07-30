@@ -5,50 +5,15 @@ import modelos.Despesa;
 import modelos.Investimento;
 import modelos.Receita;
 import modelos.Usuario;
+import repository.InvestimentoRepository;
+import service.InvestimentoService;
+import utils.AbstractValidarData;
 
-import java.sql.PreparedStatement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
-
-    public static Investimento adicionar(Investimento investimento, int idFK) throws BancoDeDadosException {
-        Connection con = null;
-        try {
-            con = ConexaoBancoDeDados.getConnection();
-
-            Integer proximoId = this.getProximoId(con);
-            contato.setIdContato(proximoId);
-
-            String sql = "INSERT INTO CONTATO\n" +
-                    "(ID_CONTATO, ID_PESSOA, TIPO, NUMERO, DESCRICAO, ID_USUARIO)\n" +
-                    "VALUES(?, ?, ?, ?, ?, ?)\n";
-
-            PreparedStatement stmt = con.prepareStatement(sql);
-
-            stmt.setInt(1, contato.getIdContato());
-            stmt.setInt(2, contato.getPessoa().getIdPessoa());
-            stmt.setInt(3, contato.getTipoContato().getTipo()); // RESIDENCIAL(1) //1
-            stmt.setString(4, contato.getNumero());
-            stmt.setString(5, contato.getDescricao());
-            stmt.setInt(6, idFK);
-
-            int res = stmt.executeUpdate();
-            System.out.println("adicionarContato.res=" + res);
-            return contato;
-        } catch (SQLException e) {
-            throw new BancoDeDadosException(e.getCause());
-        } finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
     public static void main(String[] args) {
 
         /** @Início */
@@ -56,6 +21,9 @@ public class Main {
         GerenciadorFinancas gerenciadorFinancas = new PlanejamentoFinanceiroPessoal(userJeff);
 
         Usuario user;
+        //int idPK = 1;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         int[] escolhas = {-2, -2, -2};
         Scanner sc = new Scanner(System.in);
@@ -95,14 +63,28 @@ public class Main {
 
                                 System.out.print("Descrição: ");
                                 String descricao = sc.nextLine();
+                                boolean valida = false;
+                                String dataString = "";
+                                while (valida == false) {
+                                    System.out.print("Data: ");
+                                    dataString = sc.nextLine();
 
-                                System.out.print("Data: ");
-                                String data = sc.nextLine();
+                                    valida = AbstractValidarData.validarData(dataString);
+                                    if (valida) {
+                                        break;
+                                    } else {
+                                        System.out.println("Formato de data inválido!");
+                                    }
+                                }
+
+                                LocalDate data = LocalDate.parse(dataString, formatter);
                                 Integer tipoDespesa = null;
                                 switch (escolhas[0]) {
                                     case 1:
+
                                         do {
                                             System.out.println("""
+                                                    TIPO:
                                                     1- FIXA
                                                     2- VARIÁVEL
                                                     """);
@@ -119,15 +101,22 @@ public class Main {
                                         } while (tipoDespesa < 1 || tipoDespesa > 2);
                                         break;
                                     case 2:
-                                        System.out.print("Data início: ");
-                                        String dataInicio = sc.next();
+                                        //System.out.print("Data início: ");
+                                        //String dataInicio = sc.next();
+                                        LocalDate dataInicio = data;
                                         System.out.print("Corretora: ");
                                         String corretora = sc.next();
-                                        gerenciadorFinancas.addInvestimento(new Investimento(valor, descricao, corretora, dataInicio));
+                                        Investimento investimento = new Investimento(valor, descricao, corretora, dataInicio, idPK);
+                                        //gerenciadorFinancas.addInvestimento(investimento);
+                                        InvestimentoService investimentoService = new InvestimentoService();
+                                        investimentoService.adicionarInvestimento(investimento);
+
+
                                         break;
                                     case 3:
                                         do {
                                             System.out.println("""
+                                                    TIPO:
                                                     1- FIXA
                                                     2- VARIÁVEL
                                                     """);
