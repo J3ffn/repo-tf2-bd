@@ -5,9 +5,10 @@ import modelos.Despesa;
 import modelos.Investimento;
 import modelos.Receita;
 import modelos.Usuario;
-import repository.InvestimentoRepository;
-import service.InvestimentoService;
+import service.ReceitaService;
 import utils.AbstractValidarData;
+
+import java.sql.PreparedStatement;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -26,7 +27,6 @@ public class Main {
         int idPK = 1;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
         int[] escolhas = {-2, -2, -2};
         Scanner sc = new Scanner(System.in);
         while (escolhas[0] != 0) {
@@ -145,7 +145,7 @@ public class Main {
                                                 System.out.print("Id: ");
                                                 id = sc.nextInt();
                                             } while (id < 0 || id > qtdd - 1);
-                                                gerenciadorFinancas.deleteDespesa(id);
+                                            gerenciadorFinancas.deleteDespesa(id);
                                         }
                                         break;
                                     case 2:
@@ -231,11 +231,11 @@ public class Main {
                                                 System.out.print("Id: ");
                                                 id = sc.nextInt();
                                             } while (id < 0 || id > qtddDespesas - 1);
-                                                if (tipoAtualizacao == 1) {
-                                                    gerenciadorFinancas.updateValorDespesa(id, novoValor);
-                                                } else {
-                                                    gerenciadorFinancas.updateDescricaoDespesa(id, novaDescricao);
-                                                }
+                                            if (tipoAtualizacao == 1) {
+                                                gerenciadorFinancas.updateValorDespesa(id, novoValor);
+                                            } else {
+                                                gerenciadorFinancas.updateDescricaoDespesa(id, novaDescricao);
+                                            }
                                         }
                                         break;
                                     case 2:
