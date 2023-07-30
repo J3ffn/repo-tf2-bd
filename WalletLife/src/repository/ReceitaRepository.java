@@ -12,8 +12,8 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
 
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
-        String sql = "SELECT seq_receita.nextval mysequence from DUAL";
 
+        String sql = "SELECT seq_receita.nextval mysequence from DUAL";
         Statement stmt = connection.createStatement();
         ResultSet res = stmt.executeQuery(sql);
 
@@ -95,7 +95,7 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
     }
 
     @Override
-    public boolean editar(Integer id, Receita receita) throws BancoDeDadosException {
+    public boolean editar(Receita receita) throws BancoDeDadosException {
 
         Connection con = null;
 
@@ -108,7 +108,7 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
             sql.append(" empresa = ? ");
             sql.append(" valor = ? ");
             sql.append(" descricao = ? ");
-            sql.append(" id_usuario = ? ");
+            sql.append(" WHERE id_usuario = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
@@ -137,7 +137,7 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
     }
 
     @Override
-    public List<Receita> listar(Integer id) throws BancoDeDadosException {
+    public List<Receita> listar(Integer idUsuario) throws BancoDeDadosException {
 
         List<Receita> receitas = new ArrayList<>();
         Connection con = null;
@@ -145,7 +145,7 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT * FROM RECEITA";
+            String sql = "SELECT * FROM RECEITA WHERE ID_USUARIO = " + idUsuario;
 
             // Executa-se a consulta
             ResultSet res = stmt.executeQuery(sql);

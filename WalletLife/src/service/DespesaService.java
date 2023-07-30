@@ -41,19 +41,19 @@ public class DespesaService {
     }
 
     // atualização de um objeto
-    public void editarDespesa(Integer id, Despesa despesa) {
+    public void editarDespesa(Despesa despesa) {
         try {
-            boolean conseguiuEditar = despesaRepository.editar(id, despesa);
-            System.out.println("despesa editada? " + conseguiuEditar + "| com id=" + id);
+            boolean conseguiuEditar = despesaRepository.editar(despesa);
+            System.out.println("despesa editada? " + conseguiuEditar + "| com id=" + despesa.getId());
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
     }
 
     // leitura
-    public void listarDespesa(Integer idUsuario) {
+    public void listarDespesa(Integer id) {
         try {
-            List<Despesa> listar = despesaRepository.listar();
+            List<Despesa> listar = despesaRepository.listar(id);
             listar.forEach(System.out::println);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();

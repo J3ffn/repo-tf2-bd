@@ -47,9 +47,10 @@ public class Main {
             while (usuario == null && logarOuRegistrar == 2) {
                 System.out.print("Nome completo: ");
                 String nomeCompleto = sc.nextLine();
+                sc.nextLine();
 
                 System.out.print("Data de nascimento: ");
-                String dataPedida = sc.next();
+                String dataPedida = sc.nextLine();
 
                 while (!validarData(dataPedida)) {
                     dataPedida = sc.next();
@@ -150,10 +151,10 @@ public class Main {
                                                 if (tipoDespesa > 0 && tipoDespesa < 3) {
                                                     switch (tipoDespesa) {
                                                         case 1:
-                                                            gerenciadorFinancas.addDespesa(new Despesa(TipoDespesaEReceita.FIXA, valor, descricao, data));
+                                                            gerenciadorFinancas.addDespesa(new Despesa(TipoDespesaEReceita.FIXA, valor, descricao, data, usuario.getId()));
                                                             break;
                                                         case 2:
-                                                            gerenciadorFinancas.addDespesa(new Despesa(TipoDespesaEReceita.VARIAVEL, valor, descricao, data));
+                                                            gerenciadorFinancas.addDespesa(new Despesa(TipoDespesaEReceita.VARIAVEL, valor, descricao, data, usuario.getId()));
                                                     }
 
                                                 }
@@ -180,10 +181,10 @@ public class Main {
                                                 if (tipoDespesa > 0 && tipoDespesa < 3) {
                                                     switch (tipoDespesa) {
                                                         case 1:
-                                                            gerenciadorFinancas.addReceita(new Receita(TipoDespesaEReceita.FIXA, valor, descricao));
+                                                            gerenciadorFinancas.addReceita(new Receita(TipoDespesaEReceita.FIXA, valor, descricao, usuario.getId()));
                                                             break;
                                                         case 2:
-                                                            gerenciadorFinancas.addReceita(new Receita(TipoDespesaEReceita.VARIAVEL, valor, descricao));
+                                                            gerenciadorFinancas.addReceita(new Receita(TipoDespesaEReceita.VARIAVEL, valor, descricao, usuario.getId()));
                                                     }
                                                 }
                                             } while (tipoDespesa < 1 || tipoDespesa > 2);

@@ -100,7 +100,7 @@ public class DespesaRepository implements Repositorio<Integer, Despesa > {
     }
 
     @Override
-    public boolean editar(Integer id, Despesa despesa) throws BancoDeDadosException {
+    public boolean editar(Despesa despesa) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -120,7 +120,6 @@ public class DespesaRepository implements Repositorio<Integer, Despesa > {
             stmt.setString(3, despesa.getDescricao());
             stmt.setDate(4, Date.valueOf(despesa.getDataPagamento()));
             stmt.setInt(5, despesa.getIdFK());
-
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();

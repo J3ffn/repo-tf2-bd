@@ -30,7 +30,7 @@ public class ReceitaService {
     public void removerReceita(Integer id) {
         try {
             boolean conseguiuRemover = receitaRepository.remover(id);
-            System.out.println("removido? " + conseguiuRemover + "| com id=" + id);
+            System.out.println("Receita removida? " + conseguiuRemover + "| com id=" + id);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
@@ -39,17 +39,17 @@ public class ReceitaService {
     // atualização de um objeto
     public void editarReceita(Integer id, Receita receita) {
         try {
-            boolean conseguiuEditar = receitaRepository.editar(id, receita);
-            System.out.println("editado? " + conseguiuEditar + "| com id=" + id);
+            boolean conseguiuEditar = receitaRepository.editar(receita);
+            System.out.println("Receita editada? " + conseguiuEditar + "| com id=" + id);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
     }
 
     // leitura
-    public void listar(Integer id) {
+    public void listar(Integer idUsuario) {
         try {
-            List<Receita> listar = receitaRepository.listar(id);
+            List<Receita> listar = receitaRepository.listar(idUsuario);
             listar.forEach(System.out::println);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
