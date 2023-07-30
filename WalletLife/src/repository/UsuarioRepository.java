@@ -3,30 +3,43 @@ package repository;
 import exceptions.BancoDeDadosException;
 import modelos.Usuario;
 
-import java.io.Reader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioRepository implements Repositorio<Integer, Usuario> {
 
-    public boolean loginUsuario(String email, String senha) throws SQLException {
+    public boolean validarEmail(String email) throws SQLException {
         String sql = "SELECT * FROM USUARIO u " +
-                     "WHERE u.email = '" + email + "' AND u.senha = '" + senha + "'";
+                "WHERE u.email = '" + email;
 
         Statement stmt = ConexaoBancoDeDados.getConnection().createStatement();
         ResultSet res = stmt.executeQuery(sql);
 
         boolean loginPermitido = false;
         Usuario usuario = new Usuario();
-        while(res.next()) {
+
+        return res.getRow() > 0;
+    }
+
+    public Usuario loginUsuario(String email, String senha) throws SQLException {
+        String sql = "SELECT * FROM USUARIO u " +
+                "WHERE u.email = '" + email + "' AND u.senha = '" + senha + "'";
+
+        Statement stmt = ConexaoBancoDeDados.getConnection().createStatement();
+        ResultSet res = stmt.executeQuery(sql);
+
+        Usuario usuario = new Usuario();
+        while (res.next()) {
             usuario.setId(res.getInt("id_usuario"));
             usuario.setNomeCompleto(res.getString("nome"));
             usuario.setCpf(res.getString("cpf"));
-            loginPermitido = true;
+            usuario.setEmail(res.getString("email"));
+            usuario.setSenha(res.getString("senha"));
+            usuario.setDataNascimento(res.getDate("dataNascimento").toLocalDate());
         }
 
-        return loginPermitido;
+        return usuario;
     }
 
     @Override
@@ -110,7 +123,7 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
     }
 
     @Override
-    public boolean editar(Integer id, Usuario usuario) throws BancoDeDadosException {
+    public boolean editar(Usuario usuario) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -122,7 +135,7 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
             sql.append(" cpf = ?,");
             sql.append(" email = ?,");
             sql.append(" senha = ?,");
-            sql.append(" WHERE id_usuario = ? ");
+            sql.append("where id_usuario = ?");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
@@ -131,7 +144,7 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
             stmt.setString(3, usuario.getCpf());
             stmt.setString(4, usuario.getEmail());
             stmt.setString(5, usuario.getSenha());
-            stmt.setInt(6, id);
+            stmt.setInt(6, usuario.getId());
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
@@ -152,23 +165,23 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
     }
 
     @Override
-    public List<Usuario> listar() throws BancoDeDadosException {
+    public List<Usuario> listar(Integer idUsuario) throws BancoDeDadosException {
         List<Usuario> usuarios = new ArrayList<>();
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT * FROM PESSOA";
+            String sql = "SELECT * FROM USUARIO WHERE ID_USUARIO = " + idUsuario;
 
             // Executa-se a consulta
             ResultSet res = stmt.executeQuery(sql);
 
             while (res.next()) {
                 Usuario usuario = new Usuario();
-                usuario.setId(res.getInt("id_pessoa"));
+                usuario.setId(res.getInt("id_usuario"));
                 usuario.setNomeCompleto(res.getString("nome"));
-                usuario.setDataNascimento(res.getDate("data_nascimento").toLocalDate());
+                usuario.setDataNascimento(res.getDate("dataNascimento").toLocalDate());
                 usuario.setCpf(res.getString("cpf"));
                 usuario.setEmail(res.getString("email"));
                 usuario.setSenha(res.getString("senha"));

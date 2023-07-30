@@ -2,20 +2,22 @@ package manipulacaoDinheiro;
 
 import enumerators.TipoDespesaEReceita;
 import modelos.*;
+import service.InvestimentoService;
+import service.UsuarioService;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 
 public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
 
     private final Usuario usuario;
 
+    private UsuarioService usuarioService;
+
     private HashMap<Integer, Despesa> despesas;
 
     private HashMap<Integer, Investimento> investimentos;
+
+    private InvestimentoService investimentoService;
 
     private HashMap<Integer, Receita> receitas;
 
@@ -29,7 +31,9 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
         this.despesas = new HashMap<>();
         this.receitas = new HashMap<>();
         this.investimentos = new HashMap<>();
+        this.investimentoService = new InvestimentoService();
         this.usuario = usuario;
+        this.usuarioService = new UsuarioService();
     }
 
     @Override
@@ -54,6 +58,7 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
         return totalInvestimento;
     }
 
+    @Override
     public double calcularDespesa() {
         totalDespesas = calcularTotal(despesas);
         return totalDespesas;
@@ -91,12 +96,14 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
     }
 
     public void addInvestimento(Investimento investimento) {
+        investimentoService.adicionarInvestimento(investimento);
         investimento.setId(investimentos.size());
         this.investimentos.put(investimento.getId(), investimento);
         this.totalInvestimento += investimento.getValor();
     }
 
     public void updateValorInvestimento(int id, double valor) {
+        this.investimentoService.editarInvestimento(investimentos.get(id).getId(), investimentos.get(id));
         this.totalInvestimento -= investimentos.get(id).getValor();
         this.investimentos.get(id).setValor(valor);
         this.totalInvestimento += investimentos.get(id).getValor();

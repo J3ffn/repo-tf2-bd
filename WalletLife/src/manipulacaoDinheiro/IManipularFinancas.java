@@ -1,9 +1,6 @@
 package manipulacaoDinheiro;
 
-import modelos.AbstractMovimentoDinheiro;
-
 import java.util.HashMap;
-import java.util.HashSet;
 
 public interface IManipularFinancas {
 
@@ -12,5 +9,7 @@ public interface IManipularFinancas {
     double calcularReceitaTotal();
 
     double calcularInvestimentos();
+
+    double calcularDespesa();
 
 }
