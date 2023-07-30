@@ -94,10 +94,10 @@ public class Main {
                                             if (tipoDespesa > 0 && tipoDespesa < 3) {
                                                 switch (tipoDespesa) {
                                                     case 1:
-                                                        gerenciadorFinancas.addDespesa(new Despesa(TipoDespesaEReceita.FIXA, valor, descricao, data));
+                                                        gerenciadorFinancas.addDespesa(new Despesa(TipoDespesaEReceita.FIXA, valor, descricao, data,idPK));
                                                         break;
                                                     case 2:
-                                                        gerenciadorFinancas.addDespesa(new Despesa(TipoDespesaEReceita.VARIAVEL, valor, descricao, data));
+                                                        gerenciadorFinancas.addDespesa(new Despesa(TipoDespesaEReceita.VARIAVEL, valor, descricao, data, idPK));
                                                 }
                                             }
                                         } while (tipoDespesa < 1 || tipoDespesa > 2);
