@@ -14,17 +14,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
+  
     public static void main(String[] args) {
 
         /** @Início */
         Usuario userJeff = new Usuario("Jeff", "01/01/1111", "93812739812", "Jeff@gmail.com", "Testando");
         GerenciadorFinancas gerenciadorFinancas = new PlanejamentoFinanceiroPessoal(userJeff);
-
+      
         Usuario user;
         int idPK = 1;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
         int[] escolhas = {-2, -2, -2};
         Scanner sc = new Scanner(System.in);
         while (escolhas[0] != 0) {
