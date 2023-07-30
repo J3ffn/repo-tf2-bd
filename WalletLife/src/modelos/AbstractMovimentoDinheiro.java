@@ -4,22 +4,18 @@ import manipulacaoDinheiro.GerenciadorFinancas;
 
 public abstract class AbstractMovimentoDinheiro<T> {
 
-    protected T tipo;
-
     private int id;
-
-    private double valor;
-
+    protected T tipo;
+    private Double valor;
     private String descricao;
 
-    public AbstractMovimentoDinheiro () {};
+    public AbstractMovimentoDinheiro(){}
 
     public AbstractMovimentoDinheiro(T tipo, double valor, String descricao) {
         this.tipo = tipo;
         this.valor = valor;
         this.descricao = descricao;
     }
-
 
     public int getId() {
         return id;
@@ -37,11 +33,11 @@ public abstract class AbstractMovimentoDinheiro<T> {
         this.tipo = tipo;
     }
 
-    public double getValor() {
+    public Double getValor() {
         return this.valor;
     }
 
-    public void setValor(double valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 

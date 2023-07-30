@@ -1,7 +1,6 @@
 package modelos;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class Investimento extends AbstractMovimentoDinheiro<String> {
 
@@ -11,9 +10,7 @@ public class Investimento extends AbstractMovimentoDinheiro<String> {
 
     private int idFK;
 
-    public Investimento() {
-    };
-
+    public Investimento() {}
 
     public Investimento(double valor, String descricao, String corretora, LocalDate dataInicio, int idFK) {
         super("Investimento", valor, descricao);

@@ -10,11 +10,13 @@ public abstract class AbstractValidarData {
         try {
             String diaStr = partes[0];
             int dia = Integer.parseInt(diaStr);
+
             if (diaStr.length() != 2 || dia > 31 || dia < 1) {
                 return false;
             }
             String mesStr = partes[1];
             int mes = Integer.parseInt(mesStr);
+
             if (mesStr.length() != 2 || mes > 12 || mes < 1) {
                 return false;
             }
