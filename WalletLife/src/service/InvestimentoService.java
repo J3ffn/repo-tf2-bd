@@ -29,7 +29,7 @@ public class InvestimentoService {
     }
 
     // remoção
-    public void removerPessoa(Integer id) {
+    public void removerInvestimento(Integer id) {
         try {
             boolean conseguiuRemover = investimentoRepository.remover(id);
             System.out.println("investimento removido? " + conseguiuRemover + "| com id=" + id);
@@ -39,7 +39,7 @@ public class InvestimentoService {
     }
 
     // atualização de um objeto
-    public void editarPessoa(Integer id, Investimento investimento) {
+    public void editarInvestimento(Integer id, Investimento investimento) {
         try {
             boolean conseguiuEditar = investimentoRepository.editar(id, investimento);
             System.out.println("investimento editado? " + conseguiuEditar + "| com id=" + id);

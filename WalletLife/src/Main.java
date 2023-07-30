@@ -21,7 +21,7 @@ public class Main {
         GerenciadorFinancas gerenciadorFinancas = new PlanejamentoFinanceiroPessoal(userJeff);
 
         Usuario user;
-        //int idPK = 1;
+        int idPK = 1;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -107,10 +107,7 @@ public class Main {
                                         System.out.print("Corretora: ");
                                         String corretora = sc.next();
                                         Investimento investimento = new Investimento(valor, descricao, corretora, dataInicio, idPK);
-                                        //gerenciadorFinancas.addInvestimento(investimento);
-                                        InvestimentoService investimentoService = new InvestimentoService();
-                                        investimentoService.adicionarInvestimento(investimento);
-
+                                        gerenciadorFinancas.addInvestimento(investimento);
 
                                         break;
                                     case 3:
