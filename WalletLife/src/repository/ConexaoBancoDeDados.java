@@ -5,8 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexaoBancoDeDados {
+
     private static final String SERVER = "localhost";
-    private static final String PORT = "1521"; // Porta TCP padrão do Oracle
+    private static final String PORT = "1523"; // Porta TCP padrão do Oracle
     private static final String DATABASE = "xe";
 
     // Configuração dos parâmetros de autenticação
@@ -27,7 +28,7 @@ public class ConexaoBancoDeDados {
         return con;
     }
 
-    private static final String SERVERFIRMA = "vemser-hml.dbccompany.com.br\n";
+    private static final String SERVERFIRMA = "vemser-hml.dbccompany.com.br";
     private static final String PORTFIRMA = "25000"; // Porta TCP padrão do Oracle
     private static final String DATABASEFIRMA = "xe";
 
@@ -37,14 +38,14 @@ public class ConexaoBancoDeDados {
     private static final String SCHEMAFIRMA = "EQUIPE_5";
 
     public static Connection getConnectionFirma() throws SQLException {
-        String url = "jdbc:oracle:thin:@" + SERVER + ":" + PORT + ":" + DATABASE;
+        String url = "jdbc:oracle:thin:@" + SERVERFIRMA + ":" + PORTFIRMA + ":" + DATABASEFIRMA;
         // jdbc:oracle:thin:@localhost:1521:xe
 
         // Abre-se a conexão com o Banco de Dados
-        Connection con = DriverManager.getConnection(url, USER, PASS);
+        Connection con = DriverManager.getConnection(url, USERFIRMA, PASSFIRMA);
 
         // sempre usar o schema vem_ser
-        con.createStatement().execute("alter session set current_schema=" + SCHEMA);
+        con.createStatement().execute("alter session set current_schema=" + SCHEMAFIRMA);
 
         return con;
     }
