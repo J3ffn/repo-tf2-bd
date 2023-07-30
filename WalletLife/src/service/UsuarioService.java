@@ -4,18 +4,35 @@ import exceptions.BancoDeDadosException;
 import modelos.Usuario;
 import repository.UsuarioRepository;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class UsuarioService {
 
-    private UsuarioRepository usuarioRepository;
+    private static UsuarioRepository usuarioRepository;
 
     public UsuarioService() {
         this.usuarioRepository = new UsuarioRepository();
     }
 
+    public static boolean validarEmail(String email) {
+        try {
+            return usuarioRepository.validarEmail(email);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Usuario login(String email, String senha) {
+        try {
+            return usuarioRepository.loginUsuario(email, senha);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // criação de um objeto
-    public void adicionarUsuario(Usuario usuario) {
+    public static void adicionarUsuario(Usuario usuario) {
         try {
             if (usuario.getCpf().length() != 11) {
                 throw new Exception("CPF Invalido!");
@@ -42,10 +59,10 @@ public class UsuarioService {
     }
 
     // atualização de um objeto
-    public void editarPessoa(Integer id, Usuario usuario) {
+    public void editarPessoa(Usuario usuario) {
         try {
-            boolean conseguiuEditar = usuarioRepository.editar(id, usuario);
-            System.out.println("usuario editada? " + conseguiuEditar + "| com id=" + id);
+            boolean conseguiuEditar = usuarioRepository.editar(usuario);
+            System.out.println("usuario editada? " + conseguiuEditar + "| com id=" + usuario.getId());
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
@@ -54,7 +71,7 @@ public class UsuarioService {
     // leitura
     public void listarPessoas() {
         try {
-            List<Usuario> listar = usuarioRepository.listar();
+            List<Usuario> listar = usuarioRepository.listar(null);
             listar.forEach(System.out::println);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();

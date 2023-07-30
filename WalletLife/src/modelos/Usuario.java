@@ -1,7 +1,6 @@
 package modelos;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class Usuario {
 
@@ -17,11 +16,12 @@ public class Usuario {
 
     private String senha;
 
-    public Usuario() {}
+    public Usuario() {
+    }
 
-    public Usuario(String nomeCompleto, String dataNascimento, String cpf, String email, String senha) {
+    public Usuario(String nomeCompleto, LocalDate dataNascimento, String cpf, String email, String senha) {
         this.nomeCompleto = nomeCompleto;
-        this.dataNascimento = LocalDate.parse(dataNascimento);
+        this.dataNascimento = dataNascimento;
         this.cpf = cpf;
         this.email = email;
         this.senha = senha;

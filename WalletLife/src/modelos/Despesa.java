@@ -8,9 +8,16 @@ public class Despesa extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
 
     private LocalDate dataPagamento;
 
-    public Despesa(TipoDespesaEReceita tipoDespesa, double valor, String descricao, LocalDate dataPagamento) {
+    private int  idFK;
+
+    public Despesa(TipoDespesaEReceita tipoDespesa, double valor, String descricao, LocalDate dataPagamento, int idFK) {
         super(tipoDespesa, valor, descricao);
         this.dataPagamento = dataPagamento;
+        this.idFK = idFK;
+
+    }
+    public Despesa(){
+
     }
 
     public LocalDate getDataPagamento() {
@@ -26,5 +33,13 @@ public class Despesa extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
         return "Despesa{" +
                 "dataPagamento='" + dataPagamento + '\'' +
                 '}';
+    }
+
+    public int getIdFK() {
+        return idFK;
+    }
+
+    public void setIdFK(int idFK) {
+        this.idFK = idFK;
     }
 }
