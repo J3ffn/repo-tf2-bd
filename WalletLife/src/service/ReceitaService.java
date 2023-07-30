@@ -39,7 +39,7 @@ public class ReceitaService {
     // atualização de um objeto
     public void editarReceita(Integer id, Receita receita) {
         try {
-            boolean conseguiuEditar = receitaRepository.editar(id, receita);
+            boolean conseguiuEditar = receitaRepository.editar(receita);
             System.out.println("editado? " + conseguiuEditar + "| com id=" + id);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
@@ -47,9 +47,9 @@ public class ReceitaService {
     }
 
     // leitura
-    public void listar(Integer id) {
+    public void listar(Integer idUsuario) {
         try {
-            List<Receita> listar = receitaRepository.listar(id);
+            List<Receita> listar = receitaRepository.listar(idUsuario);
             listar.forEach(System.out::println);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();

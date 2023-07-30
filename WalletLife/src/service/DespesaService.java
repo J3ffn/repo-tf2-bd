@@ -43,7 +43,7 @@ public class DespesaService {
     // atualização de um objeto
     public void editarDespesa(Integer id, Despesa despesa) {
         try {
-            boolean conseguiuEditar = despesaRepository.editar(id, despesa);
+            boolean conseguiuEditar = despesaRepository.editar(despesa);
             System.out.println("despesa editada? " + conseguiuEditar + "| com id=" + id);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
@@ -53,7 +53,7 @@ public class DespesaService {
     // leitura
     public void listarDespesa(Integer idUsuario) {
         try {
-            List<Despesa> listar = despesaRepository.listar();
+            List<Despesa> listar = despesaRepository.listar(idUsuario);
             listar.forEach(System.out::println);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();

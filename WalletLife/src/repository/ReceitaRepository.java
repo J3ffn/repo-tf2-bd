@@ -95,7 +95,7 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
     }
 
     @Override
-    public boolean editar(Integer id, Receita receita) throws BancoDeDadosException {
+    public boolean editar(Receita receita) throws BancoDeDadosException {
 
         Connection con = null;
 
