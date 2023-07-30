@@ -44,7 +44,11 @@ public class DespesaService {
     public void editarDespesa(Despesa despesa) {
         try {
             boolean conseguiuEditar = despesaRepository.editar(despesa);
+<<<<<<< HEAD
             System.out.println("despesa editada? " + conseguiuEditar + "| com id=" + despesa.getId());
+=======
+            System.out.println("despesa editada? " + conseguiuEditar + "| com id=" + id);
+>>>>>>> develop
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
@@ -53,7 +57,11 @@ public class DespesaService {
     // leitura
     public void listarDespesa(Integer id) {
         try {
+<<<<<<< HEAD
             List<Despesa> listar = despesaRepository.listar(id);
+=======
+            List<Despesa> listar = despesaRepository.listar(idUsuario);
+>>>>>>> develop
             listar.forEach(System.out::println);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();

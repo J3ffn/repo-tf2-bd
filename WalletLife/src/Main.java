@@ -16,7 +16,9 @@ import java.util.Scanner;
 public class Main {
 
     public static boolean validarData(String data) {
-        System.out.println("Data inválida!");
+        if(!AbstractValidarData.validarData(data)) {
+            System.out.println("Data inválida!");
+        }
         return AbstractValidarData.validarData(data);
     }
 
@@ -42,7 +44,8 @@ public class Main {
             Integer logarOuRegistrar = 0;
             do {
                 logarOuRegistrar = sc.nextInt();
-            } while (logarOuRegistrar > 2 && logarOuRegistrar < 0);
+                sc.nextLine();
+            } while (logarOuRegistrar > 2 || logarOuRegistrar < 0);
 
             while (usuario == null && logarOuRegistrar == 2) {
                 System.out.print("Nome completo: ");

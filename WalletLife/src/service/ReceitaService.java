@@ -40,7 +40,11 @@ public class ReceitaService {
     public void editarReceita(Integer id, Receita receita) {
         try {
             boolean conseguiuEditar = receitaRepository.editar(receita);
+<<<<<<< HEAD
             System.out.println("Receita editada? " + conseguiuEditar + "| com id=" + id);
+=======
+            System.out.println("editado? " + conseguiuEditar + "| com id=" + id);
+>>>>>>> develop
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
