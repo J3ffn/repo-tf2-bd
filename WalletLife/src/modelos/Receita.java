@@ -8,14 +8,15 @@ public class Receita extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
 
     private String empresa;
 
-    private int idFK;;
+    private int idFK;
 
     public Receita(){
         super();
     }
 
-    public Receita(TipoDespesaEReceita tipo, double valor, String descricao) {
+    public Receita(TipoDespesaEReceita tipo, double valor, String descricao, int idFK) {
         super(tipo, valor, descricao);
+        this.idFK = idFK;
     }
 
     public String getBanco() {

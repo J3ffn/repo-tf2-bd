@@ -100,7 +100,7 @@ public class DespesaRepository implements Repositorio<Integer, Despesa > {
     }
 
     @Override
-    public boolean editar(Integer id, Despesa despesa) throws BancoDeDadosException {
+    public boolean editar(Despesa despesa) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();

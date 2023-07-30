@@ -39,7 +39,7 @@ public class ReceitaService {
     // atualização de um objeto
     public void editarReceita(Integer id, Receita receita) {
         try {
-            boolean conseguiuEditar = receitaRepository.editar(id, receita);
+            boolean conseguiuEditar = receitaRepository.editar(receita);
             System.out.println("editado? " + conseguiuEditar + "| com id=" + id);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();

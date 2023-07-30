@@ -95,7 +95,7 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
     }
 
     @Override
-    public boolean editar(Integer id, Receita receita) throws BancoDeDadosException {
+    public boolean editar(Receita receita) throws BancoDeDadosException {
 
         Connection con = null;
 
@@ -137,7 +137,7 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
     }
 
     @Override
-    public List<Receita> listar(Integer id) throws BancoDeDadosException {
+    public List<Receita> listar(Integer idUsuario) throws BancoDeDadosException {
 
         List<Receita> receitas = new ArrayList<>();
         Connection con = null;
@@ -145,7 +145,7 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT * FROM RECEITA";
+            String sql = "SELECT * FROM RECEITA where id_usuario " + idUsuario;
 
             // Executa-se a consulta
             ResultSet res = stmt.executeQuery(sql);
