@@ -3,11 +3,12 @@ package repository;
 import exceptions.BancoDeDadosException;
 import modelos.Investimento;
 
+import java.net.IDN;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvestimentoRepository implements  Repositorio<Integer, Investimento> {
+public class InvestimentoRepository implements Repositorio<Integer, Investimento> {
     @Override
     public Integer getProximoId(Connection connection) throws BancoDeDadosException {
         try {
@@ -136,14 +137,14 @@ public class InvestimentoRepository implements  Repositorio<Integer, Investiment
     }
 
     @Override
-    public List<Investimento> listar() throws BancoDeDadosException {
+    public List<Investimento> listar(Integer idUsuario) throws BancoDeDadosException {
         List<Investimento> investimentos = new ArrayList<>();
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT * FROM INVESTIMENTO";
+            String sql = "SELECT * FROM INVESTIMENTO WHERE ID_USUARIO = " + idUsuario;
 
             // Executa-se a consulta
             ResultSet res = stmt.executeQuery(sql);

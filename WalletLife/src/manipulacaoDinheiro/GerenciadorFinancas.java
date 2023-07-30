@@ -54,6 +54,7 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
         return totalInvestimento;
     }
 
+    @Override
     public double calcularDespesa() {
         totalDespesas = calcularTotal(despesas);
         return totalDespesas;
@@ -182,15 +183,15 @@ public class GerenciadorFinancas implements IManipularFinancas, IImpressao {
     @Override
     public void imprimir() {
         System.out.println(
-                "GerenciadorFinancas {" +
-                        "despesas=" + despesas +
-                        ", investimentos=" + investimentos +
-                        ", receitas=" + receitas +
-                        ", totalReceita=" + totalReceita +
-                        ", totalDespesas=" + totalDespesas +
-                        ", totalInvestimento=" + totalInvestimento +
-                        ", usuario=" + usuario +
-                        '}'
+            "GerenciadorFinancas {" +
+                    "despesas=" + despesas +
+                    ", investimentos=" + investimentos +
+                    ", receitas=" + receitas +
+                    ", totalReceita=" + totalReceita +
+                    ", totalDespesas=" + totalDespesas +
+                    ", totalInvestimento=" + totalInvestimento +
+                    ", usuario=" + usuario +
+                    '}'
         );
     }
 

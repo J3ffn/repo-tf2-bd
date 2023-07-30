@@ -49,9 +49,9 @@ public class InvestimentoService {
     }
 
     // leitura
-    public void listar() {
+    public void listar(Integer idUsuario) {
         try {
-            List<Investimento> listar = investimentoRepository.listar();
+            List<Investimento> listar = investimentoRepository.listar(idUsuario);
             listar.forEach(System.out::println);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();

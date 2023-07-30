@@ -152,7 +152,7 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
     }
 
     @Override
-    public List<Usuario> listar() throws BancoDeDadosException {
+    public List<Usuario> listar(Integer idUsuario) throws BancoDeDadosException {
         List<Usuario> usuarios = new ArrayList<>();
         Connection con = null;
         try {
