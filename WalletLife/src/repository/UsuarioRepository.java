@@ -10,9 +10,28 @@ import java.util.List;
 
 public class UsuarioRepository implements Repositorio<Integer, Usuario> {
 
+    public boolean loginUsuario(String email, String senha) throws SQLException {
+        String sql = "SELECT * FROM USUARIO u " +
+                     "WHERE u.email = '" + email + "' AND u.senha = '" + senha + "'";
+
+        Statement stmt = ConexaoBancoDeDados.getConnection().createStatement();
+        ResultSet res = stmt.executeQuery(sql);
+
+        boolean loginPermitido = false;
+        Usuario usuario = new Usuario();
+        while(res.next()) {
+            usuario.setId(res.getInt("id_usuario"));
+            usuario.setNomeCompleto(res.getString("nome"));
+            usuario.setCpf(res.getString("cpf"));
+            loginPermitido = true;
+        }
+
+        return loginPermitido;
+    }
+
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
-        String sql = "SELECT seq_pessoa2.nextval mysequence from DUAL";
+        String sql = "SELECT seq_usuario.nextval mysequence from DUAL";
 
         Statement stmt = connection.createStatement();
         ResultSet res = stmt.executeQuery(sql);

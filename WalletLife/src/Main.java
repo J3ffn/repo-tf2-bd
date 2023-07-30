@@ -18,8 +18,8 @@ public class Main {
     public static void main(String[] args) {
 
         /** @Início */
-        Usuario userJeff = new Usuario("Jeff", "01/01/1111", "93812739812", "Jeff@gmail.com", "Testando");
-        GerenciadorFinancas gerenciadorFinancas = new PlanejamentoFinanceiroPessoal(userJeff);
+        Usuario usuario = new Usuario("Jeff", "01/01/1111", "93812739812", "Jeff@gmail.com", "Testando");
+        GerenciadorFinancas gerenciadorFinancas = new PlanejamentoFinanceiroPessoal(usuario);
 
       
         Usuario user;
@@ -138,8 +138,8 @@ public class Main {
                                 Integer qtdd = null;
                                 switch (escolhas[0]) {
                                     case 1:
-                                        qtdd = gerenciadorFinancas.getDespesas().getLista().size();
-                                        gerenciadorFinancas.getDespesas().getLista().forEach((key, despesa) -> System.out.println("Id: " + key + " Despesa: " + despesa));
+                                        qtdd = gerenciadorFinancas.getDespesas().size();
+                                        gerenciadorFinancas.getDespesas().forEach((key, despesa) -> System.out.println("Id: " + key + " Despesa: " + despesa));
                                         if (qtdd > 0) {
                                             do {
                                                 System.out.print("Id: ");
@@ -149,8 +149,8 @@ public class Main {
                                         }
                                         break;
                                     case 2:
-                                        qtdd = gerenciadorFinancas.getInvestimentos().getLista().size();
-                                        gerenciadorFinancas.getInvestimentos().getLista().forEach((key, investimento) -> System.out.println("Id: " + key + " Investimento: " + investimento));
+                                        qtdd = gerenciadorFinancas.getInvestimentos().size();
+                                        gerenciadorFinancas.getInvestimentos().forEach((key, investimento) -> System.out.println("Id: " + key + " Investimento: " + investimento));
                                         if (qtdd > 0) {
                                             do {
                                                 System.out.print("Id: ");
@@ -160,8 +160,8 @@ public class Main {
                                         }
                                         break;
                                     case 3:
-                                        qtdd = gerenciadorFinancas.getReceitas().getLista().size();
-                                        gerenciadorFinancas.getReceitas().getLista().forEach((key, receita) -> System.out.println("Id: " + key + " Receita: " + receita));
+                                        qtdd = gerenciadorFinancas.getReceitas().size();
+                                        gerenciadorFinancas.getReceitas().forEach((key, receita) -> System.out.println("Id: " + key + " Receita: " + receita));
                                         if (qtdd > 0) {
                                             do {
 
@@ -176,9 +176,9 @@ public class Main {
 
                             case 3:
                                 Integer tipoAtualizacao = null;
-                                int qtddDespesas = gerenciadorFinancas.getDespesas().getLista().size();;
-                                int qtddInvestimentos = gerenciadorFinancas.getInvestimentos().getLista().size();
-                                int qtddReceita = gerenciadorFinancas.getReceitas().getLista().size();
+                                int qtddDespesas = gerenciadorFinancas.getDespesas().size();;
+                                int qtddInvestimentos = gerenciadorFinancas.getInvestimentos().size();
+                                int qtddReceita = gerenciadorFinancas.getReceitas().size();
                                 boolean continuarAtualizacao = true;
 
                                 switch (escolhas[0]) {
@@ -225,7 +225,7 @@ public class Main {
 
                                 switch (escolhas[0]) {
                                     case 1:
-                                        gerenciadorFinancas.getDespesas().getLista().forEach((key, despesa) -> System.out.println("Id: " + key + " Despesa: " + despesa));
+                                        gerenciadorFinancas.getDespesas().forEach((key, despesa) -> System.out.println("Id: " + key + " Despesa: " + despesa));
                                         if (qtddDespesas > 0) {
                                             do {
                                                 System.out.print("Id: ");
@@ -239,7 +239,7 @@ public class Main {
                                         }
                                         break;
                                     case 2:
-                                        gerenciadorFinancas.getInvestimentos().getLista().forEach((key, investimento) -> System.out.println("Id: " + key + " Investimento: " + investimento));
+                                        gerenciadorFinancas.getInvestimentos().forEach((key, investimento) -> System.out.println("Id: " + key + " Investimento: " + investimento));
                                         if (qtddInvestimentos > 0) {
                                             do {
                                                 System.out.print("Id: ");
@@ -253,7 +253,7 @@ public class Main {
                                         }
                                         break;
                                     case 3:
-                                        gerenciadorFinancas.getReceitas().getLista().forEach((key, receita) -> System.out.println("Id: " + key + " Receita: " + receita));
+                                        gerenciadorFinancas.getReceitas().forEach((key, receita) -> System.out.println("Id: " + key + " Receita: " + receita));
                                         if (qtddReceita > 0) {
                                             do {
                                                 System.out.print("Id: ");
