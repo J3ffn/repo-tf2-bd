@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvestimentoRepository implements  Repositorio<Integer, Investimento> {
+public class InvestimentoRepository implements Repositorio<Integer, Investimento> {
     @Override
     public Integer getProximoId(Connection connection) throws BancoDeDadosException {
         try {
@@ -69,7 +69,7 @@ public class InvestimentoRepository implements  Repositorio<Integer, Investiment
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            String sql = "DELETE FROM INVESTIMENTO WHERE ID_CONTATO = ?";
+            String sql = "DELETE FROM INVESTIMENTO WHERE ID_USUARIO = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
@@ -94,7 +94,7 @@ public class InvestimentoRepository implements  Repositorio<Integer, Investiment
     }
 
     @Override
-    public boolean editar(Integer id, Investimento investimento) throws BancoDeDadosException {
+    public boolean editar(Investimento investimento) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -106,7 +106,7 @@ public class InvestimentoRepository implements  Repositorio<Integer, Investiment
             sql.append(" valor = ? ");
             sql.append(" data_inicial = ? ");
             sql.append(" descricao = ? ");
-            sql.append(" id_usuario = ? ");
+            sql.append(" where id_usuario = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
@@ -142,8 +142,8 @@ public class InvestimentoRepository implements  Repositorio<Integer, Investiment
         try {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
-
-            String sql = "SELECT * FROM INVESTIMENTO where id_usuario = " + idUsuario;
+          
+            String sql = "SELECT * FROM INVESTIMENTO WHERE ID_USUARIO = " + idUsuario;
 
             // Executa-se a consulta
             ResultSet res = stmt.executeQuery(sql);
