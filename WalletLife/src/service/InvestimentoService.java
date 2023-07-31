@@ -17,21 +17,22 @@ public class InvestimentoService {
     public void adicionarInvestimento(Investimento investimento) {
         try {
             Investimento investimentoAdicionado = investimentoRepository.adicionar(investimento);
-            System.out.println("investimento adicinado com sucesso! " + investimentoAdicionado);
+            System.out.println();
+            System.out.println("INVESTIMENTO adicionado com sucesso!");
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         } catch (Exception e) {
             System.out.println("ERRO: " + e.getMessage());
-//            System.out.println("TRACE: ");
-//            e.printStackTrace();
         }
     }
 
     // remoção
     public void removerInvestimento(Integer id) {
         try {
-            boolean conseguiuRemover = investimentoRepository.remover(id);
-            System.out.println("investimento removido? " + conseguiuRemover + "| com id=" + id);
+            investimentoRepository.remover(id);
+            System.out.println();
+
+            System.out.println("INVESTIMENTO removido com sucesso!");
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
@@ -40,21 +41,22 @@ public class InvestimentoService {
     // atualização de um objeto
     public void editarInvestimento(Integer id, Investimento investimento) {
         try {
-            boolean conseguiuEditar = investimentoRepository.editar(investimento);
-            System.out.println("investimento editado? " + conseguiuEditar + "| com id=" + id);
+            investimentoRepository.editar(investimento);
+            System.out.println();
+            System.out.println("INVESTIMENTO alterado com sucesso!");
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
     }
 
     // leitura
-    public void listar(Integer idUsuario) {
+    public List<Investimento> listar(Integer idUsuario) {
         try {
-            List<Investimento> listar = investimentoRepository.listar(idUsuario);
-            listar.forEach(System.out::println);
+            return investimentoRepository.listar(idUsuario);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 }

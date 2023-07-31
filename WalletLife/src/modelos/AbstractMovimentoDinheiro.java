@@ -2,13 +2,13 @@ package modelos;
 
 public abstract class AbstractMovimentoDinheiro<T> {
 
-    private int id;
     protected T tipo;
+    private int id;
     private Double valor;
     private String descricao;
 
-    public AbstractMovimentoDinheiro() {}
-
+    public AbstractMovimentoDinheiro() {
+    }
 
     public AbstractMovimentoDinheiro(T tipo, double valor, String descricao) {
         this.tipo = tipo;
@@ -50,5 +50,13 @@ public abstract class AbstractMovimentoDinheiro<T> {
 
     public void setDecricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("""
+                Tipo: %s
+                Valor: %5.2f
+                Descrição: %s""", getTipo(), getValor(), getDescricao());
     }
 }

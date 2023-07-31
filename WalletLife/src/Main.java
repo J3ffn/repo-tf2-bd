@@ -6,8 +6,8 @@ import modelos.Investimento;
 import modelos.Receita;
 import modelos.Usuario;
 import service.UsuarioService;
+import utils.AbstractFormatoEmail;
 import utils.AbstractValidarData;
-import java.sql.PreparedStatement;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,10 +16,19 @@ import java.util.Scanner;
 public class Main {
 
     public static boolean validarData(String data) {
-        if(!AbstractValidarData.validarData(data)) {
+        boolean valida = AbstractValidarData.validarData(data);
+        if (!valida) {
             System.out.println("Data inválida!");
         }
-        return AbstractValidarData.validarData(data);
+        return valida;
+    }
+
+    public static boolean validarEmail(String email) {
+        boolean valida = AbstractFormatoEmail.formatadorEmail(email);
+        if (!valida) {
+            System.out.println("Formato de email inválido!");
+        }
+        return valida;
     }
 
     public static void main(String[] args) {
@@ -32,64 +41,124 @@ public class Main {
 
         boolean logado = false;
         do {
-            // Registro:
-            System.out.print("""
-                    ---- BEM-VINDO(A) AO WALLET LIFE ----
-                         Digitos disponíveis:
-                         1 - logar.
-                         2 - registrar-se.
-                         0 - sair.
-                         escolha:
-                    """);
-            Integer logarOuRegistrar = 0;
+            boolean voltar;
+            Integer logarOuRegistrar;
             do {
-                logarOuRegistrar = sc.nextInt();
-                sc.nextLine();
-            } while (logarOuRegistrar > 2 || logarOuRegistrar < 0);
+                voltar = false;
+                // Registro:
+                System.out.print("""
+                        \u001b[32m- BEM-VINDO(A) AO WALLET LIFE -\u001b[m
+                        Opções disponíveis:
+                        \u001b[36m1 - Logar.\u001b[m
+                        \u001b[34m2 - Registrar-se.\u001b[m
+                        \u001b[31m0 - Sair.\u001b[m
+                         """);
+                System.out.print("Escolha: ");
+                do {
+                    logarOuRegistrar = sc.nextInt();
+                    sc.nextLine();
+                } while (logarOuRegistrar > 2 || logarOuRegistrar < 0);
 
-            while (usuario == null && logarOuRegistrar == 2) {
-                System.out.print("Nome completo: ");
-                String nomeCompleto = sc.nextLine();
-
-                System.out.print("Data de nascimento: ");
-                String dataPedida = sc.nextLine();
-
-                while (!validarData(dataPedida)) {
-                    dataPedida = sc.next();
+                if (logarOuRegistrar == 0) {
+                    break;
                 }
 
-                LocalDate dataNascimento = LocalDate.parse(dataPedida, formatter);
+                while (usuario == null && logarOuRegistrar == 2) {
+                    System.out.println("\nInsira 0 em qualquer etapa do cadastro para voltar à tela de login.\n");
+                    System.out.print("Nome completo: ");
+                    String nomeCompleto = sc.nextLine();
+                    if ((nomeCompleto.equals("0"))) {
+                        voltar = true;
+                        break;
+                    }
 
-                System.out.print("CPF: ");
-                String cpf = sc.next();
+                    System.out.print("Data de nascimento: ");
+                    String dataPedida = sc.nextLine();
+                    if (dataPedida.equals("0")) {
+                        voltar = true;
+                        break;
+                    }
 
-                System.out.print("Email: ");
-                String email = sc.next();
+                    while (!validarData(dataPedida)) {
+                        dataPedida = sc.next();
+                    }
 
-                while (UsuarioService.validarEmail(email)) {
-                    System.out.println("Email já está em uso");
-                    email = sc.next();
+                    LocalDate dataNascimento = LocalDate.parse(dataPedida, formatter);
+
+                    System.out.print("CPF: ");
+                    String cpf = sc.next();
+                    if (cpf.equals("0")) {
+                        voltar = true;
+                        break;
+                    }
+
+                    String email = "";
+                    boolean checado = false;
+                    do {
+                        System.out.print("Email: ");
+                        email = sc.next();
+                        if (email.equals("0")) {
+                            voltar = true;
+                            break;
+                        }
+                        if (!AbstractFormatoEmail.formatadorEmail(email)) {
+                            System.out.println("Formato de e-mail invalido!\n");
+                        } else if (UsuarioService.validarEmail(email)) {
+                            System.out.println("E-mail ja em uso! Digite outro email\n");
+
+                        } else {
+                            checado = true;
+                        }
+                    } while (!checado);
+
+                    if (email.equals("0")) {
+                        voltar = true;
+                        break;
+                    }
+
+                    System.out.print("Senha: ");
+                    String senha = sc.next();
+
+                    usuario = new Usuario(nomeCompleto, dataNascimento, cpf, email.toLowerCase(), senha);
+                    UsuarioService.adicionarUsuario(usuario);
                 }
 
-                System.out.print("Senha: ");
-                String senha = sc.next();
+                if (voltar) {
+                    continue;
+                }
+                logado = false;
+                // Login:
+                while (!logado) {
 
-                usuario = new Usuario(nomeCompleto, dataNascimento, cpf, email, senha);
+                    System.out.println("\nInsira os dados de login:\n");
+                    System.out.print("E-mail: ");
+                    String email = sc.next();
+
+                    System.out.print("Senha: ");
+                    String senha = sc.next();
+
+                    usuario = UsuarioService.login(email, senha);
+                    if (usuario != null) {
+                        logado = true;
+                        System.out.println();
+                    } else {
+                        System.out.print("Tentar novamente? 1 - sim, 2 - não: ");
+                        int escolha = sc.nextInt();
+                        if (escolha == 2) {
+                            voltar = true;
+                            System.out.println();
+                            break;
+                        }
+                    }
+                }
+            } while (!logado);
+
+            if (logarOuRegistrar == 0) {
+                break;
             }
 
-            UsuarioService.adicionarUsuario(usuario);
-
-            // Login:
-            while (usuario == null) {
-
-                System.out.print("email: ");
-                String email = sc.next();
-
-                System.out.print("senha: ");
-                String senha = sc.next();
-
-                usuario = UsuarioService.login(email, senha);
-
+            if (voltar) {
+                continue;
             }
 
             gerenciadorFinancas = new PlanejamentoFinanceiroPessoal(usuario);
@@ -104,8 +173,13 @@ public class Main {
                             3 - Receita
                             4 - Relatório
                             0 - Trocar de conta""");
-                    System.out.print("Escolha: ");
+                    System.out.print("\nEscolha: ");
                     escolhasManipulacao[0] = sc.nextInt();
+
+                    if (escolhasManipulacao[0] == 0) {
+                        usuario = null;
+                        logado = false;
+                    }
 
                     System.out.println();
                     if (escolhasManipulacao[0] > 0 && escolhasManipulacao[0] <= 4 && escolhasManipulacao[0] != 4) {
@@ -163,8 +237,6 @@ public class Main {
                                             } while (tipoDespesa < 1 || tipoDespesa > 2);
                                             break;
                                         case 2:
-                                            //System.out.print("Data início: ");
-                                            //String dataInicio = sc.next();
                                             LocalDate dataInicio = data;
                                             System.out.print("Corretora: ");
                                             String corretora = sc.next();
@@ -173,23 +245,12 @@ public class Main {
 
                                             break;
                                         case 3:
-                                            do {
-                                                System.out.println("""
-                                                        TIPO:
-                                                        1- FIXA
-                                                        2- VARIÁVEL
-                                                        """);
-                                                tipoDespesa = sc.nextInt();
-                                                if (tipoDespesa > 0 && tipoDespesa < 3) {
-                                                    switch (tipoDespesa) {
-                                                        case 1:
-                                                            gerenciadorFinancas.addReceita(new Receita(TipoDespesaEReceita.FIXA, valor, descricao, usuario.getId()));
-                                                            break;
-                                                        case 2:
-                                                            gerenciadorFinancas.addReceita(new Receita(TipoDespesaEReceita.VARIAVEL, valor, descricao, usuario.getId()));
-                                                    }
-                                                }
-                                            } while (tipoDespesa < 1 || tipoDespesa > 2);
+                                            sc.nextLine();
+                                            System.out.print("Banco: ");
+                                            String banco = sc.nextLine();
+                                            System.out.print("Empresa: ");
+                                            String empresa = sc.nextLine();
+                                            gerenciadorFinancas.addReceita(new Receita(valor, descricao, banco, empresa, usuario.getId()));
                                             break;
                                     }
                                     break;
@@ -199,7 +260,13 @@ public class Main {
                                     switch (escolhasManipulacao[0]) {
                                         case 1:
                                             qtdd = gerenciadorFinancas.getDespesas().size();
-                                            gerenciadorFinancas.getDespesas().forEach((key, despesa) -> System.out.println("Id: " + key + " Despesa: " + despesa));
+                                            gerenciadorFinancas.getDespesas().forEach((key, despesa) -> {
+                                                System.out.println();
+                                                System.out.println("------------------------------");
+                                                System.out.println("\u001b[32mId: " + key + "\u001B[m");
+                                                System.out.println(despesa);
+                                                System.out.println();
+                                            });
                                             if (qtdd > 0) {
                                                 do {
                                                     System.out.print("Id: ");
@@ -210,7 +277,13 @@ public class Main {
                                             break;
                                         case 2:
                                             qtdd = gerenciadorFinancas.getInvestimentos().size();
-                                            gerenciadorFinancas.getInvestimentos().forEach((key, investimento) -> System.out.println("Id: " + key + " Investimento: " + investimento));
+                                            gerenciadorFinancas.getInvestimentos().forEach((key, investimento) -> {
+                                                System.out.println();
+                                                System.out.println("------------------------------");
+                                                System.out.println("\u001b[32mId: " + key + "\u001B[m");
+                                                System.out.println(investimento);
+                                                System.out.println();
+                                            });
                                             if (qtdd > 0) {
                                                 do {
                                                     System.out.print("Id: ");
@@ -221,7 +294,13 @@ public class Main {
                                             break;
                                         case 3:
                                             qtdd = gerenciadorFinancas.getReceitas().size();
-                                            gerenciadorFinancas.getReceitas().forEach((key, receita) -> System.out.println("Id: " + key + " Receita: " + receita));
+                                            gerenciadorFinancas.getReceitas().forEach((key, receita) -> {
+                                                System.out.println();
+                                                System.out.println("------------------------------");
+                                                System.out.println("\u001b[32mId: " + key + "\u001B[m");
+                                                System.out.println(receita);
+                                                System.out.println();
+                                            });
                                             if (qtdd > 0) {
                                                 do {
                                                     System.out.print("Id: ");
@@ -278,6 +357,7 @@ public class Main {
                                                 break;
                                             case 2:
                                                 System.out.print("Nova descrição: ");
+                                                sc.nextLine(); // Lixo
                                                 novaDescricao = sc.nextLine();
                                                 break;
                                         }
@@ -285,7 +365,13 @@ public class Main {
 
                                     switch (escolhasManipulacao[0]) {
                                         case 1:
-                                            gerenciadorFinancas.getDespesas().forEach((key, despesa) -> System.out.println("Id: " + key + " Despesa: " + despesa));
+                                            gerenciadorFinancas.getDespesas().forEach((key, despesa) -> {
+                                                System.out.println();
+                                                System.out.println("------------------------------");
+                                                System.out.println("\u001b[32mId: " + key + "\u001B[m");
+                                                System.out.println(despesa);
+                                                System.out.println();
+                                            });
                                             if (qtddDespesas > 0) {
                                                 do {
                                                     System.out.print("Id: ");
@@ -299,7 +385,13 @@ public class Main {
                                             }
                                             break;
                                         case 2:
-                                            gerenciadorFinancas.getInvestimentos().forEach((key, investimento) -> System.out.println("Id: " + key + " Investimento: " + investimento));
+                                            gerenciadorFinancas.getInvestimentos().forEach((key, investimento) -> {
+                                                System.out.println();
+                                                System.out.println("------------------------------");
+                                                System.out.println("\u001b[32mId: " + key + "\u001B[m");
+                                                System.out.println(investimento);
+                                                System.out.println();
+                                            });
                                             if (qtddInvestimentos > 0) {
                                                 do {
                                                     System.out.print("Id: ");
@@ -313,7 +405,13 @@ public class Main {
                                             }
                                             break;
                                         case 3:
-                                            gerenciadorFinancas.getReceitas().forEach((key, receita) -> System.out.println("Id: " + key + " Receita: " + receita));
+                                            gerenciadorFinancas.getReceitas().forEach((key, receita) -> {
+                                                System.out.println();
+                                                System.out.println("------------------------------");
+                                                System.out.println("\u001b[32mId: " + key + "\u001B[m");
+                                                System.out.println(receita);
+                                                System.out.println();
+                                            });
                                             if (qtddReceita > 0) {
                                                 do {
                                                     System.out.print("Id: ");
@@ -327,7 +425,7 @@ public class Main {
                                             }
                                             break;
                                     }
-
+                                    sc.nextLine();
                                     break;
 
                                 case 4:

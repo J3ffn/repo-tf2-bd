@@ -8,7 +8,7 @@ public class Despesa extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
 
     private LocalDate dataPagamento;
 
-    private int  idFK;
+    private int idFK;
 
     public Despesa(TipoDespesaEReceita tipoDespesa, double valor, String descricao, LocalDate dataPagamento, int idFK) {
         super(tipoDespesa, valor, descricao);
@@ -16,7 +16,8 @@ public class Despesa extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
         this.idFK = idFK;
 
     }
-    public Despesa(){
+
+    public Despesa() {
 
     }
 
@@ -28,12 +29,6 @@ public class Despesa extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
         this.dataPagamento = dataPagamento;
     }
 
-    @Override
-    public String toString() {
-        return "Despesa{" +
-                "dataPagamento='" + dataPagamento + '\'' +
-                '}';
-    }
 
     public int getIdFK() {
         return idFK;
@@ -41,5 +36,12 @@ public class Despesa extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
 
     public void setIdFK(int idFK) {
         this.idFK = idFK;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("""
+                %s
+                Data Pagamento: %s""", super.toString(), getDataPagamento());
     }
 }

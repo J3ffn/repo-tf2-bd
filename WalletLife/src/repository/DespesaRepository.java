@@ -3,14 +3,12 @@ package repository;
 import enumerators.TipoDespesaEReceita;
 import exceptions.BancoDeDadosException;
 import modelos.Despesa;
-import modelos.Usuario;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DespesaRepository implements Repositorio<Integer, Despesa > {
+public class DespesaRepository implements Repositorio<Integer, Despesa> {
 
 
     @Override
@@ -47,13 +45,12 @@ public class DespesaRepository implements Repositorio<Integer, Despesa > {
 
             stmt.setInt(1, despesa.getId());
             stmt.setString(2, despesa.getTipo().toString());
-            stmt.setDouble(3,despesa.getValor());
+            stmt.setDouble(3, despesa.getValor());
             stmt.setString(4, despesa.getDescricao()); // RESIDENCIAL(1) //1
             stmt.setDate(5, Date.valueOf(despesa.getDataPagamento()));
             stmt.setInt(6, despesa.getIdFK());
 
             int res = stmt.executeUpdate();
-            System.out.println("adicionarDespesa.res=" + res);
             return despesa;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
@@ -82,7 +79,6 @@ public class DespesaRepository implements Repositorio<Integer, Despesa > {
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
-            System.out.println("removerDespesaPorId.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -107,24 +103,19 @@ public class DespesaRepository implements Repositorio<Integer, Despesa > {
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE DESPESA SET ");
-            sql.append(" tipo = ?,");
             sql.append(" valor = ?,");
-            sql.append(" descricao = ? ");
-            sql.append(" data_pagamento = ? ");
-            sql.append(" id_usuario = ? ");
+            sql.append(" descricao = ?, ");
+            sql.append(" WHERE id_usuario = ?");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setString(1, despesa.getTipo().toString());
-            stmt.setDouble(2, despesa.getValor());
-            stmt.setString(3, despesa.getDescricao());
-            stmt.setDate(4, Date.valueOf(despesa.getDataPagamento()));
-            stmt.setInt(5, despesa.getIdFK());
+            stmt.setDouble(1, despesa.getValor());
+            stmt.setString(2, despesa.getDescricao());
+            stmt.setInt(3, despesa.getIdFK());
 
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
-            System.out.println("editarDespesa.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -148,7 +139,7 @@ public class DespesaRepository implements Repositorio<Integer, Despesa > {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT * FROM DESPESA where id_usuario " + idUsuario;
+            String sql = "SELECT * FROM DESPESA where id_usuario = " + idUsuario;
 
             // Executa-se a consulta
             ResultSet res = stmt.executeQuery(sql);

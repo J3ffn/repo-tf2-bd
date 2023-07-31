@@ -11,8 +11,11 @@ public class UsuarioService {
 
     private static UsuarioRepository usuarioRepository;
 
+    static {
+        usuarioRepository = new UsuarioRepository();
+    }
+
     public UsuarioService() {
-        this.usuarioRepository = new UsuarioRepository();
     }
 
     public static boolean validarEmail(String email) {
@@ -39,7 +42,9 @@ public class UsuarioService {
             }
 
             Usuario pessoaAdicionada = usuarioRepository.adicionar(usuario);
-            System.out.println("pessoa adicinada com sucesso! " + pessoaAdicionada);
+            System.out.println();
+            System.out.println("USUÁRIO criado com sucesso!");
+
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -52,7 +57,8 @@ public class UsuarioService {
     public void removerPessoa(Integer id) {
         try {
             boolean conseguiuRemover = usuarioRepository.remover(id);
-            System.out.println("pessoa removida? " + conseguiuRemover + "| com id=" + id);
+            System.out.println();
+            System.out.println("USUÁRIO removida com sucesso!");
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
@@ -62,20 +68,23 @@ public class UsuarioService {
     public void editarPessoa(Usuario usuario) {
         try {
             boolean conseguiuEditar = usuarioRepository.editar(usuario);
-            System.out.println("usuario editada? " + conseguiuEditar + "| com id=" + usuario.getId());
+            System.out.println();
+            System.out.println("USUÁRIO Alterada com sucesso!");
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
     }
 
     // leitura
-    public void listarPessoas() {
+    public List<Usuario> listarPessoas() {
         try {
             List<Usuario> listar = usuarioRepository.listar(null);
             listar.forEach(System.out::println);
+            return listar;
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 }
