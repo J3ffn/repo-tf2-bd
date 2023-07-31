@@ -54,10 +54,12 @@ public class Main {
                         \u001b[31m0 - Sair.\u001b[m
                          """);
                 System.out.print("Escolha: ");
-                do {
+                logarOuRegistrar = sc.nextInt();
+                while (logarOuRegistrar > 2 || logarOuRegistrar < 0) {
+                    System.out.println("Opção inválida!");
+                    System.out.print("Nova escolha: ");
                     logarOuRegistrar = sc.nextInt();
-                    sc.nextLine();
-                } while (logarOuRegistrar > 2 || logarOuRegistrar < 0);
+                }
 
                 if (logarOuRegistrar == 0) {
                     break;
@@ -65,6 +67,7 @@ public class Main {
 
                 while (usuario == null && logarOuRegistrar == 2) {
                     System.out.println("\nInsira 0 em qualquer etapa do cadastro para voltar à tela de login.\n");
+                    sc.nextLine();
                     System.out.print("Nome completo: ");
                     String nomeCompleto = sc.nextLine();
                     if ((nomeCompleto.equals("0"))) {
@@ -80,6 +83,7 @@ public class Main {
                     }
 
                     while (!validarData(dataPedida)) {
+                        System.out.print("Data: ");
                         dataPedida = sc.next();
                     }
 
@@ -131,7 +135,7 @@ public class Main {
                 while (!logado) {
 
                     System.out.println("\nInsira os dados de login:\n");
-                    System.out.print("E-mail: ");
+                    System.out.print("Email: ");
                     String email = sc.next();
 
                     System.out.print("Senha: ");
