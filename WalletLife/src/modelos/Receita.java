@@ -8,8 +8,18 @@ public class Receita extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
 
     private String empresa;
 
-    public Receita(TipoDespesaEReceita tipo, double valor, String descricao) {
-        super(tipo, valor, descricao);
+    private int idFK;
+
+    public Receita() {
+        super();
+    }
+
+    public Receita(double valor, String descricao, String banco, String empresa, int idFK) {
+        this.setValor(valor);
+        this.setDecricao(descricao);
+        this.banco = banco;
+        this.empresa = empresa;
+        this.idFK = idFK;
     }
 
     public String getBanco() {
@@ -28,11 +38,19 @@ public class Receita extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
         this.empresa = empresa;
     }
 
+    public int getIdFK() {
+        return idFK;
+    }
+
+    public void setIdFK(int idFK) {
+        this.idFK = idFK;
+    }
+
     @Override
     public String toString() {
-        return "Receita{" +
-                "banco='" + banco + '\'' +
-                ", empresa='" + empresa + '\'' +
-                '}';
+        return String.format("""
+                %s
+                Banco: %s
+                Empresa: %s""", super.toString(), getBanco(), getEmpresa());
     }
 }

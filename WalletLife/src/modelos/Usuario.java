@@ -1,10 +1,14 @@
 package modelos;
 
+import java.time.LocalDate;
+
 public class Usuario {
+
+    private Integer id;
 
     private String nomeCompleto;
 
-    private String dataNascimento;
+    private LocalDate dataNascimento;
 
     private String cpf;
 
@@ -12,12 +16,23 @@ public class Usuario {
 
     private String senha;
 
-    public Usuario(String nomeCompleto, String dataNascimento, String cpf, String email, String senha) {
+    public Usuario() {
+    }
+
+    public Usuario(String nomeCompleto, LocalDate dataNascimento, String cpf, String email, String senha) {
         this.nomeCompleto = nomeCompleto;
         this.dataNascimento = dataNascimento;
         this.cpf = cpf;
         this.email = email;
         this.senha = senha;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNomeCompleto() {
@@ -28,11 +43,11 @@ public class Usuario {
         this.nomeCompleto = nomeCompleto;
     }
 
-    public String getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -62,12 +77,11 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" +
-                "nomeCompleto='" + nomeCompleto + '\'' +
-                ", dataNascimento='" + dataNascimento + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", email='" + email + '\'' +
-                ", senha='" + senha + '\'' +
-                '}';
+        return String.format("""
+                Nome: %s
+                Data de nascimento: %s
+                CPF: %s
+                Email: %s
+                Senha: %s""", getNomeCompleto(), getDataNascimento(), getCpf(), getEmail(), getSenha());
     }
 }

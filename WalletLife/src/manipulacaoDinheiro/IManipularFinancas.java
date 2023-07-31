@@ -1,11 +1,15 @@
 package manipulacaoDinheiro;
 
+import java.util.HashMap;
+
 public interface IManipularFinancas {
 
-    double calcularDespesaTotal();
+    double calcularTotal(HashMap<?, ?> lista);
 
     double calcularReceitaTotal();
 
     double calcularInvestimentos();
+
+    double calcularDespesa();
 
 }
