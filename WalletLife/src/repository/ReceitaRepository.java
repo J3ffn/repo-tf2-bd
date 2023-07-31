@@ -48,7 +48,6 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
             stmt.setInt(6, receita.getIdFK());
 
             int res = stmt.executeUpdate();
-            System.out.println("adicionarReceita.res=" + res);
             return receita;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());

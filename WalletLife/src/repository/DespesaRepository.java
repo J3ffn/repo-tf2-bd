@@ -53,7 +53,6 @@ public class DespesaRepository implements Repositorio<Integer, Despesa > {
             stmt.setInt(6, despesa.getIdFK());
 
             int res = stmt.executeUpdate();
-            System.out.println("adicionarDespesa.res=" + res);
             return despesa;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());

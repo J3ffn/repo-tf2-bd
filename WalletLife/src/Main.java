@@ -49,10 +49,10 @@ public class Main {
                 System.out.print("""
                         ---- BEM-VINDO(A) AO WALLET LIFE ----
                              Digitos disponíveis:
-                             1 - logar.
-                             2 - registrar-se.
-                             0 - sair.
-                             escolha: """);
+                             1 - Logar.
+                             2 - Registrar-se.
+                             0 - Sair.""");
+                System.out.print("\n     Escolha: ");
                 Integer logarOuRegistrar;
                 do {
                     logarOuRegistrar = sc.nextInt();
@@ -103,9 +103,9 @@ public class Main {
                             break;
                         }
                         if(!AbstractFormatoEmail.formatadorEmail(email)){
-                            System.out.println("Formato de e-mail invalido!");
+                            System.out.println("Formato de e-mail invalido!\n");
                         }else if(UsuarioService.validarEmail(email)){
-                            System.out.println("E-mail ja em uso! Digite outro email");                            ;
+                            System.out.println("E-mail ja em uso! Digite outro email\n");                            ;
                         }else {
                             checado=true;
                         }
@@ -130,10 +130,10 @@ public class Main {
                 while (!logado) {
 
                     System.out.println("\nInsira os dados de login:\n");
-                    System.out.print("email: ");
+                    System.out.print("E-mail: ");
                     String email = sc.next();
 
-                    System.out.print("senha: ");
+                    System.out.print("Senha: ");
                     String senha = sc.next();
 
                     usuario = UsuarioService.login(email, senha);
@@ -159,7 +159,7 @@ public class Main {
                             3 - Receita
                             4 - Relatório
                             0 - Trocar de conta""");
-                    System.out.print("Escolha: ");
+                    System.out.print("\nEscolha: ");
                     escolhasManipulacao[0] = sc.nextInt();
 
                     System.out.println();

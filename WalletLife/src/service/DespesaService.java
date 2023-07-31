@@ -20,7 +20,11 @@ public class DespesaService {
         try {
 
             Despesa despesaAdicionado = despesaRepository.adicionar(despesa);
-            System.out.println("despesa adicinada com sucesso! " + despesaAdicionado);
+            System.out.println("\nDespesa adicinada com sucesso!" +
+                    "\nValor: " + despesaAdicionado.getValor() +
+                    "\nDescrição:  " + despesaAdicionado.getDescricao() +
+                    "\nData de pagamento: " + despesaAdicionado.getDataPagamento() +
+                    "\nTipo: " + despesaAdicionado.getTipo());
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         } catch (Exception e) {

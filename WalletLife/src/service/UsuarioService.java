@@ -42,7 +42,13 @@ public class UsuarioService {
             }
 
             Usuario pessoaAdicionada = usuarioRepository.adicionar(usuario);
-            System.out.println("pessoa adicinada com sucesso! " + pessoaAdicionada);
+            System.out.println("\nPessoa adicinada com sucesso!" +
+                    "\nNome: " + pessoaAdicionada.getNomeCompleto() +
+                    "\nNascimento" + pessoaAdicionada.getDataNascimento() +
+                    "\nCPF: " + pessoaAdicionada.getCpf() +
+                    "\nE-mail: " + pessoaAdicionada.getEmail() +
+                    "\nSenha: " + pessoaAdicionada.getSenha());
+
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         } catch (Exception e) {

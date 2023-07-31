@@ -76,7 +76,6 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
             stmt.setString(6, usuario.getSenha());
 
             int res = stmt.executeUpdate();
-            System.out.println("adicionarUsuario.res= " + res);
             return usuario;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());

@@ -48,7 +48,7 @@ public class InvestimentoRepository implements Repositorio<Integer, Investimento
             stmt.setInt(7, investimento.getIdFK());
 
             int res = stmt.executeUpdate();
-            System.out.println("adicionarInvestimento.res=" + res);
+            System.out.println(res);
             return investimento;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());

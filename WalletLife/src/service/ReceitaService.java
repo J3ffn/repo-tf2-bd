@@ -18,7 +18,11 @@ public class ReceitaService {
     public void adicionarReceita(Receita receita) {
         try {
             Receita receitaAdicionado = receitaRepository.adicionar(receita);
-            System.out.println("contato adicinado com sucesso! " + receitaAdicionado);
+            System.out.println("\nReceita adicinada com sucesso!" +
+                    "\nBanco: " + receitaAdicionado.getBanco() +
+                    "\nEmpresa:  " + receitaAdicionado.getEmpresa() +
+                    "\nValor: " + receitaAdicionado.getValor() +
+                    "\nDescrição: " + receitaAdicionado.getDescricao());
         } catch (Exception e) {
             System.out.println("ERRO: " + e.getMessage());
 //            System.out.println("TRACE: ");

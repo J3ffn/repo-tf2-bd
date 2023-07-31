@@ -17,7 +17,11 @@ public class InvestimentoService {
     public void adicionarInvestimento(Investimento investimento) {
         try {
             Investimento investimentoAdicionado = investimentoRepository.adicionar(investimento);
-            System.out.println("investimento adicinado com sucesso! " + investimentoAdicionado);
+            System.out.println("\nInvestimento adicinada com sucesso!" +
+                    "\nValor: " + investimentoAdicionado.getValor() +
+                    "\nDescrição: " + investimentoAdicionado.getDescricao() +
+                    "\nData de aquisição: " + investimentoAdicionado.getDataInicio() +
+                    "\nCorretora: " + investimentoAdicionado.getCorretora());
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         } catch (Exception e) {
