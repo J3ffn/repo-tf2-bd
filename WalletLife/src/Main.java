@@ -229,21 +229,14 @@ public class Main {
                                             break;
                                         case 3:
                                             do {
-                                                System.out.println("""
-                                                        TIPO:
-                                                        1- FIXA
-                                                        2- VARIÁVEL
-                                                        """);
-                                                tipoDespesa = sc.nextInt();
-                                                if (tipoDespesa > 0 && tipoDespesa < 3) {
-                                                    switch (tipoDespesa) {
-                                                        case 1:
-                                                            gerenciadorFinancas.addReceita(new Receita(TipoDespesaEReceita.FIXA, valor, descricao, usuario.getId()));
-                                                            break;
-                                                        case 2:
-                                                            gerenciadorFinancas.addReceita(new Receita(TipoDespesaEReceita.VARIAVEL, valor, descricao, usuario.getId()));
-                                                    }
-                                                }
+                                                sc.nextLine();
+                                                System.out.print("Banco: ");
+                                                String banco = sc.nextLine();
+
+                                                System.out.print("Empresa: ");
+                                                String empresa = sc.nextLine();
+
+                                                gerenciadorFinancas.addReceita(new Receita(valor, descricao, banco, empresa, usuario.getId()));
                                             } while (tipoDespesa < 1 || tipoDespesa > 2);
                                             break;
                                     }

@@ -14,8 +14,11 @@ public class Receita extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
         super();
     }
 
-    public Receita(TipoDespesaEReceita tipo, double valor, String descricao, int idFK) {
-        super(tipo, valor, descricao);
+    public Receita(double valor, String descricao, String banco, String empresa, int idFK) {
+        this.setValor(valor);
+        this.setDecricao(descricao);
+        this.banco = banco;
+        this.empresa = empresa;
         this.idFK = idFK;
     }
 
