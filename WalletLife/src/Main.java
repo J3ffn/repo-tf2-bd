@@ -228,16 +228,12 @@ public class Main {
 
                                             break;
                                         case 3:
-                                            do {
-                                                sc.nextLine();
-                                                System.out.print("Banco: ");
-                                                String banco = sc.nextLine();
-
-                                                System.out.print("Empresa: ");
-                                                String empresa = sc.nextLine();
-
-                                                gerenciadorFinancas.addReceita(new Receita(valor, descricao, banco, empresa, usuario.getId()));
-                                            } while (tipoDespesa < 1 || tipoDespesa > 2);
+                                            sc.nextLine();
+                                            System.out.print("Banco: ");
+                                            String banco = sc.nextLine();
+                                            System.out.print("Empresa: ");
+                                            String empresa = sc.nextLine();
+                                            gerenciadorFinancas.addReceita(new Receita(valor, descricao, banco, empresa, usuario.getId()));
                                             break;
                                     }
                                     break;

@@ -35,8 +35,8 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
             receita.setId(proximoId);
 
             String sql = "INSERT INTO RECEITA\n" +
-                    "(seq_receita.nextval, BANCO, EMPRESA, VALOR, DESCRICAO, ID_USUARIO)\n" +
-                    "VALUES(?, ?, ?, ?, ?)\n";
+                    "(ID_RECEITA, BANCO, EMPRESA, VALOR, DESCRICAO, ID_USUARIO)\n" +
+                    "VALUES(?, ?, ?, ?, ?, ?)\n";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
