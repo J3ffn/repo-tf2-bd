@@ -7,6 +7,7 @@ import repository.InvestimentoRepository;
 import java.util.List;
 
 public class InvestimentoService {
+
     private InvestimentoRepository investimentoRepository;
 
     public InvestimentoService() {

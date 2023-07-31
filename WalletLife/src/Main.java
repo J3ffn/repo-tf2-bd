@@ -62,7 +62,6 @@ public class Main {
             while (usuario == null && logarOuRegistrar == 2) {
                 System.out.print("Nome completo: ");
                 String nomeCompleto = sc.nextLine();
-                sc.nextLine();
 
                 System.out.print("Data de nascimento: ");
                 String dataPedida = sc.nextLine();
