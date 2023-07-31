@@ -223,6 +223,7 @@ public class Main {
                                                         1- FIXA
                                                         2- VARIÁVEL
                                                         """);
+                                                System.out.print("Escolha: ");
                                                 tipoDespesa = sc.nextInt();
                                                 if (tipoDespesa > 0 && tipoDespesa < 3) {
                                                     switch (tipoDespesa) {

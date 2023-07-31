@@ -14,8 +14,8 @@ public class ConexaoBancoDeDados {
     private static final String USER = "system";
     private static final String PASS = "oracle";
 
-    private static final String SCHEMA = "WalletLife";
-    
+    private static final String SCHEMA = "VEM_SER";
+
     public static Connection getConnection() throws SQLException {
         String url = "jdbc:oracle:thin:@" + SERVER + ":" + PORT + ":" + DATABASE;
         // jdbc:oracle:thin:@localhost:1521:xe
@@ -28,5 +28,4 @@ public class ConexaoBancoDeDados {
 
         return con;
     }
-
 }

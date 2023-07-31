@@ -19,6 +19,7 @@ public class DespesaService {
         try {
 
             Despesa despesaAdicionado = despesaRepository.adicionar(despesa);
+            System.out.println();
             System.out.println("DESPESA adicionada com sucesso!");
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
@@ -33,6 +34,7 @@ public class DespesaService {
     public void removerDespesa(Integer id) {
         try {
             boolean conseguiuRemover = despesaRepository.remover(id);
+            System.out.println();
             System.out.println("DESPESA removida com sucesso!");
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
