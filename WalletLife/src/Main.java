@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -41,85 +42,109 @@ public class Main {
 
         boolean logado = false;
         do {
-            // Registro:
-            System.out.print("""
-                    ---- BEM-VINDO(A) AO WALLET LIFE ----
-                         Digitos disponíveis:
-                         1 - logar.
-                         2 - registrar-se.
-                         0 - sair.
-                         escolha: """);
-            Integer logarOuRegistrar;
+            boolean voltar;
             do {
-                logarOuRegistrar = sc.nextInt();
-                sc.nextLine();
-            } while (logarOuRegistrar > 2 || logarOuRegistrar < 0);
+                voltar = false;
+                // Registro:
+                System.out.print("""
+                        ---- BEM-VINDO(A) AO WALLET LIFE ----
+                             Digitos disponíveis:
+                             1 - logar.
+                             2 - registrar-se.
+                             0 - sair.
+                             escolha: """);
+                Integer logarOuRegistrar;
+                do {
+                    logarOuRegistrar = sc.nextInt();
+                    sc.nextLine();
+                } while (logarOuRegistrar > 2 || logarOuRegistrar < 0);
 
-            if(logarOuRegistrar == 0) {
-                break;
-            }
-
-            while (usuario == null && logarOuRegistrar == 2) {
-                System.out.print("Nome completo: ");
-                String nomeCompleto = sc.nextLine();
-
-                System.out.print("Data de nascimento: ");
-                String dataPedida = sc.nextLine();
-
-                while (!validarData(dataPedida)) {
-                    dataPedida = sc.next();
+                if (logarOuRegistrar == 0) {
+                    break;
                 }
 
-                LocalDate dataNascimento = LocalDate.parse(dataPedida, formatter);
+                while (usuario == null && logarOuRegistrar == 2) {
 
-                System.out.print("CPF: ");
-                String cpf = sc.next();
-                System.out.print("Email: ");
-                String email = sc.next();
-                boolean emailDisponivel = UsuarioService.validarEmail(email);
+                    System.out.println("\nInsira 0 em qualquer etapa do cadastro para voltar à tela de login.\n");
+                    System.out.print("Nome completo: ");
+                    String nomeCompleto = sc.nextLine();
+                    if (Objects.equals(nomeCompleto, "0")) {
+                        voltar = true;
+                        break;
+                    }
 
-                while(!AbstractFormatoEmail.formatadorEmail(email)){
-                    System.out.println("Formato invalido!");
-                    email = sc.next();
-                }
+                    System.out.print("Data de nascimento: ");
+                    String dataPedida = sc.nextLine();
+                    if (Objects.equals(dataPedida, "0")) {
+                        voltar = true;
+                        break;
+                    }
 
-                while (!emailDisponivel) {
-                    System.out.println("Email já em uso! Digite outro email.");
-                    System.out.print("Email: ");
-                    email = sc.next();
+                    while (!validarData(dataPedida)) {
+                        dataPedida = sc.next();
+                    }
 
-                    while(!AbstractFormatoEmail.formatadorEmail(email)){
-                        System.out.println("Formato invalido!");
+                    LocalDate dataNascimento = LocalDate.parse(dataPedida, formatter);
+
+                    System.out.print("CPF: ");
+                    String cpf = sc.next();
+                    if (Objects.equals(cpf, "0")) {
+                        voltar = true;
+                        break;
+                    }
+
+                    String email = "";
+                    boolean checado = false;
+                    do{
+                        System.out.print("Email: ");
                         email = sc.next();
+                        if (Objects.equals(email, "0")) {
+                            voltar = true;
+                            break;
+                        }
+                        if(!AbstractFormatoEmail.formatadorEmail(email)){
+                            System.out.println("Formato de e-mail invalido!");
+                        }else if(UsuarioService.validarEmail(email)){
+                            System.out.println("E-mail ja em uso! Digite outro email");                            ;
+                        }else {
+                            checado=true;
+                        }
+                    }while (!checado);
+                    if (Objects.equals(email, "0")) {
+                        voltar = true;
+                        break;
                     }
 
-                    if(!UsuarioService.validarEmail(email)) {
-                        emailDisponivel = true;
-                    }
+                    System.out.print("Senha: ");
+                    String senha = sc.next();
 
-                };
+                    usuario = new Usuario(nomeCompleto, dataNascimento, cpf, email.toLowerCase(), senha);
+                    UsuarioService.adicionarUsuario(usuario);
+                }
 
-                System.out.print("Senha: ");
-                String senha = sc.next();
+                if(voltar){
+                    continue;
+                }
+                logado = false;
+                // Login:
+                while (!logado) {
 
-                usuario = new Usuario(nomeCompleto, dataNascimento, cpf, email.toLowerCase(), senha);
-                UsuarioService.adicionarUsuario(usuario);
-            }
+                    System.out.println("\nInsira os dados de login:\n");
+                    System.out.print("email: ");
+                    String email = sc.next();
 
-            logado = false;
-            // Login:
-            while (!logado) {
+                    System.out.print("senha: ");
+                    String senha = sc.next();
 
-                System.out.print("email: ");
-                String email = sc.next();
+                    usuario = UsuarioService.login(email, senha);
+                    if (usuario != null)
+                        logado = true;
 
-                System.out.print("senha: ");
-                String senha = sc.next();
+                }
+            } while(!logado);
 
-                usuario = UsuarioService.login(email, senha);
-                if (usuario != null)
-                    logado = true;
-
+            if(voltar) {
+                continue;
             }
 
             gerenciadorFinancas = new PlanejamentoFinanceiroPessoal(usuario);
