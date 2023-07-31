@@ -2,7 +2,6 @@ package service;
 
 import exceptions.BancoDeDadosException;
 import modelos.Despesa;
-import modelos.Investimento;
 import repository.DespesaRepository;
 
 import java.util.List;
@@ -20,11 +19,7 @@ public class DespesaService {
         try {
 
             Despesa despesaAdicionado = despesaRepository.adicionar(despesa);
-            System.out.println("\nDespesa adicinada com sucesso!" +
-                    "\nValor: " + despesaAdicionado.getValor() +
-                    "\nDescrição:  " + despesaAdicionado.getDescricao() +
-                    "\nData de pagamento: " + despesaAdicionado.getDataPagamento() +
-                    "\nTipo: " + despesaAdicionado.getTipo());
+            System.out.println("DESPESA adicionada com sucesso!");
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -38,7 +33,7 @@ public class DespesaService {
     public void removerDespesa(Integer id) {
         try {
             boolean conseguiuRemover = despesaRepository.remover(id);
-            System.out.println("despesa removida? " + conseguiuRemover + "| com id=" + id);
+            System.out.println("DESPESA removida com sucesso!");
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
@@ -47,21 +42,22 @@ public class DespesaService {
     // atualização de um objeto
     public void editarDespesa(Integer id, Despesa despesa) {
         try {
-            boolean conseguiuEditar = despesaRepository.editar(despesa);
-            System.out.println("despesa editada? " + conseguiuEditar + "| com id=" + id);
+            despesaRepository.editar(despesa);
+            System.out.println();
+            System.out.println("DESPESA alterada com sucesso!");
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
     }
 
     // leitura
-    public void listarDespesa(Integer idUsuario) {
+    public List<Despesa> listarDespesa(Integer idUsuario) {
         try {
-            List<Despesa> listar = despesaRepository.listar(idUsuario);
-            listar.forEach(System.out::println);
+            return despesaRepository.listar(idUsuario);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 

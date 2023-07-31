@@ -6,8 +6,6 @@ import modelos.Usuario;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class UsuarioRepository implements Repositorio<Integer, Usuario> {
 
@@ -28,8 +26,9 @@ public class UsuarioRepository implements Repositorio<Integer, Usuario> {
         Statement stmt = ConexaoBancoDeDados.getConnection().createStatement();
         ResultSet res = stmt.executeQuery(sql);
 
-        Usuario usuario = new Usuario();
+        Usuario usuario = null;
         while (res.next()) {
+            usuario = new Usuario();
             usuario.setId(res.getInt("id_usuario"));
             usuario.setNomeCompleto(res.getString("nome"));
             usuario.setCpf(res.getString("cpf"));

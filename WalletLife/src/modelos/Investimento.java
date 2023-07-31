@@ -46,9 +46,9 @@ public class Investimento extends AbstractMovimentoDinheiro<String> {
 
     @Override
     public String toString() {
-        return "Ivestimento{" +
-                "corretora='" + corretora + '\'' +
-                ", dataInicio='" + dataInicio + '\'' +
-                '}';
+        return String.format("""
+                %s
+                Corretora: %s
+                Data início: %s""", super.toString(), getCorretora(), getDataInicio());
     }
 }

@@ -8,9 +8,9 @@ public class Receita extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
 
     private String empresa;
 
-    private int idFK;;
+    private int idFK;
 
-    public Receita(){
+    public Receita() {
         super();
     }
 
@@ -48,9 +48,9 @@ public class Receita extends AbstractMovimentoDinheiro<TipoDespesaEReceita> {
 
     @Override
     public String toString() {
-        return "Receita{" +
-                "banco='" + banco + '\'' +
-                ", empresa='" + empresa + '\'' +
-                '}';
+        return String.format("""
+                %s
+                Banco: %s
+                Empresa: %s""", super.toString(), getBanco(), getEmpresa());
     }
 }

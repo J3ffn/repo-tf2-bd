@@ -1,6 +1,5 @@
 package repository;
 
-import enumerators.TipoDespesaEReceita;
 import exceptions.BancoDeDadosException;
 import modelos.Receita;
 
@@ -77,7 +76,6 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
-            System.out.println("removerReceitaPorId.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -103,23 +101,18 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE RECEITA SET ");
-            sql.append(" banco = ? ");
-            sql.append(" empresa = ? ");
-            sql.append(" valor = ? ");
+            sql.append(" valor = ?, ");
             sql.append(" descricao = ? ");
-            sql.append(" id_usuario = ? ");
+            sql.append(" WHERE ID_USUARIO = ?");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setString(1, receita.getBanco());
-            stmt.setString(2, receita.getEmpresa());
-            stmt.setDouble(3, receita.getValor());
-            stmt.setString(4, receita.getDescricao());
-            stmt.setInt(5, receita.getIdFK());
+            stmt.setDouble(1, receita.getValor());
+            stmt.setString(2, receita.getDescricao());
+            stmt.setInt(3, receita.getIdFK());
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
-            System.out.println("editarInvestimento.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -144,7 +137,7 @@ public class ReceitaRepository implements Repositorio<Integer, Receita> {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT * FROM RECEITA";
+            String sql = "SELECT * FROM RECEITA WHERE ID_USUARIO = " + id;
 
             // Executa-se a consulta
             ResultSet res = stmt.executeQuery(sql);

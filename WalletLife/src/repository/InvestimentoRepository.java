@@ -48,7 +48,7 @@ public class InvestimentoRepository implements Repositorio<Integer, Investimento
             stmt.setInt(7, investimento.getIdFK());
 
             int res = stmt.executeUpdate();
-            System.out.println(res);
+
             return investimento;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
@@ -77,7 +77,6 @@ public class InvestimentoRepository implements Repositorio<Integer, Investimento
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
-            System.out.println("removerInvestimentoPorId.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -101,25 +100,18 @@ public class InvestimentoRepository implements Repositorio<Integer, Investimento
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE INVESTIMENTO SET ");
-            sql.append(" corretora = ?,");
-            sql.append(" tipo = ?,");
-            sql.append(" valor = ? ");
-            sql.append(" data_inicial = ? ");
+            sql.append(" valor = ?, ");
             sql.append(" descricao = ? ");
             sql.append(" where id_usuario = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setString(1, investimento.getCorretora());
-            stmt.setString(2, investimento.getTipo());
-            stmt.setDouble(3, investimento.getValor());
-            stmt.setDate(4, Date.valueOf(investimento.getDataInicio()));
-            stmt.setString(5, investimento.getDescricao());
-            stmt.setInt(5, investimento.getIdFK());
+            stmt.setDouble(1, investimento.getValor());
+            stmt.setString(2, investimento.getDescricao());
+            stmt.setInt(3, investimento.getIdFK());
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
-            System.out.println("editarInvestimento.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -142,7 +134,7 @@ public class InvestimentoRepository implements Repositorio<Integer, Investimento
         try {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
-          
+
             String sql = "SELECT * FROM INVESTIMENTO WHERE ID_USUARIO = " + idUsuario;
 
             // Executa-se a consulta

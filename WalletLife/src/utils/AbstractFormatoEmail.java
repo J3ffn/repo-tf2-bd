@@ -11,5 +11,7 @@ public abstract class AbstractFormatoEmail {
         Matcher matcher = pattern.matcher(email);
 
         return matcher.matches();
-    };
+    }
+
+    ;
 }

@@ -77,12 +77,11 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" +
-                "nomeCompleto='" + nomeCompleto + '\'' +
-                ", dataNascimento='" + dataNascimento + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", email='" + email + '\'' +
-                ", senha='" + senha + '\'' +
-                '}';
+        return String.format("""
+                Nome: %s
+                Data de nascimento: %s
+                CPF: %s
+                Email: %s
+                Senha: %s""", getNomeCompleto(), getDataNascimento(), getCpf(), getEmail(), getSenha());
     }
 }
